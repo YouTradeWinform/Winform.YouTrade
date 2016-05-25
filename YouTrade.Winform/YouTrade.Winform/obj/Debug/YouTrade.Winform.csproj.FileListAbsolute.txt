@@ -21,3 +21,10 @@ C:\Users\Phuc\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Winfor
 C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.exe.config
 C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.exe
 C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.pdb
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.exe
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.pdb
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csprojResolveAssemblyReference.cache
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Login.resources
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.MainForm.resources
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Properties.Resources.resources
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csproj.GenerateResource.Cache

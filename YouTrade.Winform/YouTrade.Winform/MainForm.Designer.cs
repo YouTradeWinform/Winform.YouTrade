@@ -37,9 +37,9 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,6 +112,7 @@
             this.button3.TabIndex = 6;
             this.button3.Text = "Incoms";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -142,16 +143,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Actions";
             // 
-            // button5
+            // button7
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.ForeColor = System.Drawing.Color.Black;
-            this.button5.Location = new System.Drawing.Point(442, 44);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(84, 33);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Stock Market";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.ForeColor = System.Drawing.Color.Black;
+            this.button7.Location = new System.Drawing.Point(536, 44);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(84, 33);
+            this.button7.TabIndex = 10;
+            this.button7.Text = "Info";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // button6
             // 
@@ -164,16 +165,16 @@
             this.button6.Text = "Cash Follow";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // button5
             // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.ForeColor = System.Drawing.Color.Black;
-            this.button7.Location = new System.Drawing.Point(536, 44);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(84, 33);
-            this.button7.TabIndex = 10;
-            this.button7.Text = "Info";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.ForeColor = System.Drawing.Color.Black;
+            this.button5.Location = new System.Drawing.Point(442, 44);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(84, 33);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "Stock Market";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
