@@ -88,7 +88,7 @@
             // 
             this.tt.AutoSize = true;
             this.tt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tt.Location = new System.Drawing.Point(81, 154);
+            this.tt.Location = new System.Drawing.Point(78, 153);
             this.tt.Name = "tt";
             this.tt.Size = new System.Drawing.Size(0, 16);
             this.tt.TabIndex = 6;
@@ -106,6 +106,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Login";
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -54,5 +54,10 @@ namespace YouTrade.Winform
                 }
             }
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
