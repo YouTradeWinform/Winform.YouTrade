@@ -1,0 +1,10 @@
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.exe.config
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.exe
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.pdb
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csprojResolveAssemblyReference.cache
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Login.resources
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.MainForm.resources
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Properties.Resources.resources
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csproj.GenerateResource.Cache
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.exe
+D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.pdb
