@@ -174,7 +174,7 @@
             this.btnInput.TabIndex = 9;
             this.btnInput.Text = "Input Folder";
             this.btnInput.UseVisualStyleBackColor = true;
-            this.btnInput.Click += new System.EventHandler(this.btnInput_Click);
+            this.btnInput.Click += new System.EventHandler(this.Click_Input);
             // 
             // btnOutput
             // 
@@ -185,7 +185,7 @@
             this.btnOutput.TabIndex = 9;
             this.btnOutput.Text = "Output Folder";
             this.btnOutput.UseVisualStyleBackColor = true;
-            this.btnOutput.Click += new System.EventHandler(this.btnOutput_Click);
+            this.btnOutput.Click += new System.EventHandler(this.Click_Output);
             // 
             // MainForm
             // 
@@ -201,7 +201,6 @@
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
             this.Text = "MainForm";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

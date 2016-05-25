@@ -19,34 +19,36 @@ namespace YouTrade.Winform
     public partial class MainForm : Form
     {
         string sqlConnectionString = ConfigurationManager.AppSettings["connectionString"];
-
-        string pathIn = "", pathOut = "", pathTempIncome = "", pathTempBasicInfo = "";
+        string pathIn = "", pathOut = "";
+        string pathTempIncome = "", pathTempBasicInfo = "";
+        string pathTempRatios="", pathTempBalance="", pathTempStock = "";
         DataSet dsSource = null;
         DataSet dsSource1 = null;
         int demIncome = 0, demBasicInfo = 0;
 
-        private void btnInput_Click(object sender, EventArgs e)
+        #region Click_Input_Output
+        private void Click_Input(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             DialogResult result = fbd.ShowDialog();
-            if(result==DialogResult.OK)
+            if (result == DialogResult.OK)
                 tbInput.Text = fbd.SelectedPath + "\\";
         }
-
-        private void btnOutput_Click(object sender, EventArgs e)
+        private void Click_Output(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             DialogResult result = fbd.ShowDialog();
-            if(result==DialogResult.OK)
+            if (result == DialogResult.OK)
                 tbOutput.Text = fbd.SelectedPath + "\\";
         }
+        #endregion
 
+        #region Start Main, create foler for each type
         public MainForm()
         {
             InitializeComponent();
-
             // Path Input
             pathIn = System.Windows.Forms.Application.StartupPath + "\\Input\\";
             if (!Directory.Exists(pathIn))
@@ -54,7 +56,6 @@ namespace YouTrade.Winform
                 Directory.CreateDirectory(pathIn);
             }
             tbInput.Text = pathIn;
-
             // Path Output
             string pathOut1 = System.Windows.Forms.Application.StartupPath + "\\Output";
             pathOut = pathOut1 + "\\";
@@ -63,16 +64,34 @@ namespace YouTrade.Winform
                 Directory.CreateDirectory(pathOut);
             }
             tbOutput.Text = pathOut1;
-
             // Path TempIncome
             pathTempIncome = System.Windows.Forms.Application.StartupPath + "\\Output\\Income\\Temp\\";
             if (!Directory.Exists(pathTempIncome))
             {
                 Directory.CreateDirectory(pathTempIncome);
             }
-
+            //Path Temp Ratios
+            pathTempRatios = System.Windows.Forms.Application.StartupPath + "\\Output\\Ratios\\Temp\\";
+            if (!Directory.Exists(pathTempRatios))
+            {
+                Directory.CreateDirectory(pathTempRatios);
+            }
+            //Path Temp Balance
+            pathTempBalance = System.Windows.Forms.Application.StartupPath + "\\Output\\Balance\\Temp\\";
+            if (!Directory.Exists(pathTempBalance))
+            {
+                Directory.CreateDirectory(pathTempBalance);
+            }
+            //Path Temp Stock Market Data
+            pathTempStock = System.Windows.Forms.Application.StartupPath + "\\Output\\Stock\\Temp\\";
+            if (!Directory.Exists(pathTempStock))
+            {
+                Directory.CreateDirectory(pathTempStock);
+            }
         }
+        #endregion
 
+        #region 7 click
         private void Click_Ratios(object sender, EventArgs e)
         {
 
@@ -81,91 +100,53 @@ namespace YouTrade.Winform
         private void button3_Click(object sender, EventArgs e)
         {
             btnIncome.Text = "Income Running...";
-
-
             MoveToTempIncome();
             ReadExcelAndSaveIncome();
-
-
-
             btnIncome.Text = "Income";
         }
-        void ReadExcelAndSaveIncome()
+        #endregion
+
+        #region GetDatasetFromExcel
+        DataSet GetDatasetFromExcel(string path)
         {
-            try
-            {
-                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
-                foreach (string file in files1)
-                {
-                    try
-                    {
-                        string fileName = Path.GetFileNameWithoutExtension(file);
-
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
-                        if (!File.Exists(fullNameIn_In_Out))
-                        {
-
-                            dsSource = GetDatasetFromExcel(file);
-                            foreach (System.Data.DataTable tbl in dsSource.Tables)
-                            {
-                               // SaveToDBIncome(tbl);
-                                break;
-                            }
-
-                        }
-                        StoreFileIncome(file);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-               
-
-            }
+            FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+            if (excelReader == null)
+                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+            excelReader.IsFirstRowAsColumnNames = true;
+            DataSet result = excelReader.AsDataSet();
+            return result;
         }
-        // Move to temp and chang xls Income
+        #endregion
+
+        #region Move file
+        //Income
         void MoveToTempIncome()
         {
             // Chuyển file sang folder Temp
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
-
-            Microsoft.Office.Interop.Excel.Application excelApp = null;// = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-
             foreach (string file in files)
             {
-
                 try
                 {
                     excelApp = new Microsoft.Office.Interop.Excel.Application();
                     excelApp.FileValidation = MsoFileValidationMode.msoFileValidationSkip;
-
                     string fileName = Path.GetFileNameWithoutExtension(file);
                     string fileEx = Path.GetExtension(file);
-
                     string FullNameIn = tbInput.Text + fileName + fileEx;
                     string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
                     if (!File.Exists(fullNameIn_In_Temp))
                     {
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
-
                         excelApp.DisplayAlerts = false;
-                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);//+ "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "";
-
+                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
-                    //if (File.Exists(FullNameIn))
-                    //{
-                    //    File.Delete(FullNameIn);
-                    //}
                 }
                 catch (Exception ex)
                 {
-                    /////   MessageBox.Show(ex.ToString());
-                 //   listBox2.Items.Add("MoveToTemp: " + file);
                 }
                 finally
                 {
@@ -182,23 +163,13 @@ namespace YouTrade.Winform
                     }
                 }
             }
+            //Ratios
+            //Balance
+            //Stock
         }
-        private void StoreFileIncome(string fileName)
-        {
-            if (File.Exists(fileName))
-            {
-                string filenameOnly = Path.GetFileName(fileName);
+        #endregion
 
-                if (!Directory.Exists(tbOutput.Text + "\\Income\\"))
-                {
-                    Directory.CreateDirectory(tbOutput.Text + "\\Income\\");
-                }
-
-                File.Copy(fileName, tbOutput.Text+"\\Income\\" + filenameOnly, true);
-                File.Delete(fileName);
-            }
-
-        }
+        #region Save to DB
         private void SaveToDBIncome(System.Data.DataTable dt)
         {
             //string[] arr = new string[3];
@@ -310,32 +281,211 @@ namespace YouTrade.Winform
                     }
                     catch
                     {
-                      //  listBox2.Items.Add("SaveValueIncome: " + i.ToString() + "-");
+                        //  listBox2.Items.Add("SaveValueIncome: " + i.ToString() + "-");
                     }
                 }
                 dbcon.Close();
             }
-         
-        }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        }
+        #endregion
+
+        #region Store file
+        //Income
+        private void StoreFileIncome(string fileName)
         {
-
+            if (File.Exists(fileName))
+            {
+                string filenameOnly = Path.GetFileName(fileName);
+                if (!Directory.Exists(tbOutput.Text + "\\Income\\"))
+                {
+                    Directory.CreateDirectory(tbOutput.Text + "\\Income\\");
+                }
+                File.Copy(fileName, tbOutput.Text + "\\Income\\" + filenameOnly, true);
+                File.Delete(fileName);
+            }
         }
-        DataSet GetDatasetFromExcel(string path)
+        //Ratios
+        private void StoreFileRatios(string fileName)
         {
-            FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-            IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-            if (excelReader == null)
-                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-
-            excelReader.IsFirstRowAsColumnNames = true;
-            DataSet result = excelReader.AsDataSet();
-
-            return result;
-
+            if (File.Exists(fileName))
+            {
+                string filenameOnly = Path.GetFileName(fileName);
+                if (!Directory.Exists(tbOutput.Text + "\\Ratios\\"))
+                {
+                    Directory.CreateDirectory(tbOutput.Text + "\\Ratios\\");
+                }
+                File.Copy(fileName, tbOutput.Text + "\\Ratios\\" + filenameOnly, true);
+                File.Delete(fileName);
+            }
         }
+        //Balance
+        private void StoreFileBalance(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                string filenameOnly = Path.GetFileName(fileName);
+                if (!Directory.Exists(tbOutput.Text + "\\Balance\\"))
+                {
+                    Directory.CreateDirectory(tbOutput.Text + "\\Balance\\");
+                }
+                File.Copy(fileName, tbOutput.Text + "\\Balance\\" + filenameOnly, true);
+                File.Delete(fileName);
+            }
+        }
+        //Stock Market Data
+        private void StoreFileStock(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                string filenameOnly = Path.GetFileName(fileName);
+                if (!Directory.Exists(tbOutput.Text + "\\Stock\\"))
+                {
+                    Directory.CreateDirectory(tbOutput.Text + "\\Stock\\");
+                }
+                File.Copy(fileName, tbOutput.Text + "\\Stock\\" + filenameOnly, true);
+                File.Delete(fileName);
+            }
+        }
+        #endregion
+
+        #region Read Excel And Save
+        //Income
+        void ReadExcelAndSaveIncome()
+        {
+            try
+            {
+                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                foreach (string file in files1)
+                {
+                    try
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        if (!File.Exists(fullNameIn_In_Out))
+                        {
+
+                            dsSource = GetDatasetFromExcel(file);
+                            foreach (System.Data.DataTable tbl in dsSource.Tables)
+                            {
+                                break;
+                            }
+
+                        }
+                        StoreFileIncome(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        //Ratios
+        void ReadExcelAndSaveRatios()
+        {
+            try
+            {
+                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                foreach (string file in files1)
+                {
+                    try
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        if (!File.Exists(fullNameIn_In_Out))
+                        {
+
+                            dsSource = GetDatasetFromExcel(file);
+                            foreach (System.Data.DataTable tbl in dsSource.Tables)
+                            {
+                                break;
+                            }
+
+                        }
+                        StoreFileRatios(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        //Balance
+        void ReadExcelAndSaveBalance()
+        {
+            try
+            {
+                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                foreach (string file in files1)
+                {
+                    try
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        if (!File.Exists(fullNameIn_In_Out))
+                        {
+
+                            dsSource = GetDatasetFromExcel(file);
+                            foreach (System.Data.DataTable tbl in dsSource.Tables)
+                            {
+                                break;
+                            }
+
+                        }
+                        StoreFileBalance(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        //Stock Market Data
+        void ReadExcelAndSaveStock()
+        {
+            try
+            {
+                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                foreach (string file in files1)
+                {
+                    try
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        if (!File.Exists(fullNameIn_In_Out))
+                        {
+
+                            dsSource = GetDatasetFromExcel(file);
+                            foreach (System.Data.DataTable tbl in dsSource.Tables)
+                            {
+                                break;
+                            }
+
+                        }
+                        StoreFileStock(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        #endregion
     }
 }
