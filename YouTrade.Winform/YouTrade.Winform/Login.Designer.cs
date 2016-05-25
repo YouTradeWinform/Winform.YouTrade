@@ -33,7 +33,6 @@
             this.tbuser = new System.Windows.Forms.TextBox();
             this.tbpass = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tt = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -64,6 +63,7 @@
             this.tbuser.Name = "tbuser";
             this.tbuser.Size = new System.Drawing.Size(206, 22);
             this.tbuser.TabIndex = 2;
+            this.tbuser.Text = "ytanalystrecom";
             // 
             // tbpass
             // 
@@ -73,11 +73,12 @@
             this.tbpass.PasswordChar = '*';
             this.tbpass.Size = new System.Drawing.Size(206, 22);
             this.tbpass.TabIndex = 3;
+            this.tbpass.Text = "12341234";
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(81, 185);
+            this.button1.Location = new System.Drawing.Point(175, 176);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(106, 40);
             this.button1.TabIndex = 4;
@@ -85,22 +86,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Click_Login);
             // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(294, 185);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(106, 40);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Logout";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Click_LogOut);
-            // 
             // tt
             // 
             this.tt.AutoSize = true;
             this.tt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tt.Location = new System.Drawing.Point(81, 154);
+            this.tt.Location = new System.Drawing.Point(78, 153);
             this.tt.Name = "tt";
             this.tt.Size = new System.Drawing.Size(0, 16);
             this.tt.TabIndex = 6;
@@ -109,9 +99,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 261);
+            this.ClientSize = new System.Drawing.Size(469, 261);
             this.Controls.Add(this.tt);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tbpass);
             this.Controls.Add(this.tbuser);
@@ -119,6 +108,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Login";
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,7 +121,6 @@
         private System.Windows.Forms.TextBox tbuser;
         private System.Windows.Forms.TextBox tbpass;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label tt;
     }
 }

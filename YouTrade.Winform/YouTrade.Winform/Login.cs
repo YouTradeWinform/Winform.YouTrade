@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Specialized;
+using System.Configuration;
 
 namespace YouTrade.Winform
 {
@@ -29,6 +31,7 @@ namespace YouTrade.Winform
 
         private void Click_Login(object sender, EventArgs e)
         {
+          //  var connection = ConnectionFactory.GetConnection(ConfigurationManager.ConnectionStrings["Test"].ConnectionString, DataBaseProvider);
             if (tbuser.Text == "" || tbpass.Text == "")
             {
                 this.tt.ForeColor = Color.Red;
@@ -36,7 +39,10 @@ namespace YouTrade.Winform
             }
             else
             {
-                if (tbuser.Text == "ytanalystrecom" && tbpass.Text == "12341234")
+                string username= ConfigurationManager.AppSettings["username"];
+                string password = ConfigurationManager.AppSettings["password"];
+
+                if (tbuser.Text.Trim() == username && tbpass.Text == password)
                 {
                     //MessageBox.Show("Login success", "Thông Báo");
                     MainForm mForm = new MainForm();
@@ -53,6 +59,11 @@ namespace YouTrade.Winform
                     this.tbpass.Clear();
                 }
             }
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
