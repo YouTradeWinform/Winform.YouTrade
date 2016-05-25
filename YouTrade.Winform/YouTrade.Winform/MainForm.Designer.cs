@@ -32,13 +32,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbInput = new System.Windows.Forms.TextBox();
             this.tbOutput = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnBalance = new System.Windows.Forms.Button();
+            this.btnRatios = new System.Windows.Forms.Button();
             this.btnIncome = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnStock = new System.Windows.Forms.Button();
             this.btnInput = new System.Windows.Forms.Button();
             this.btnOutput = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -80,28 +80,29 @@
             this.tbOutput.Size = new System.Drawing.Size(693, 22);
             this.tbOutput.TabIndex = 3;
             // 
-            // button1
+            // btnBalance
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(344, 44);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(123, 33);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Balance";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBalance.ForeColor = System.Drawing.Color.Black;
+            this.btnBalance.Location = new System.Drawing.Point(344, 44);
+            this.btnBalance.Name = "btnBalance";
+            this.btnBalance.Size = new System.Drawing.Size(123, 33);
+            this.btnBalance.TabIndex = 4;
+            this.btnBalance.Text = "Balance";
+            this.btnBalance.UseVisualStyleBackColor = true;
+            this.btnBalance.Click += new System.EventHandler(this.Click_Balance);
             // 
-            // button2
+            // btnRatios
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(194, 44);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(107, 33);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Ratios";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Click_Ratios);
+            this.btnRatios.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRatios.ForeColor = System.Drawing.Color.Black;
+            this.btnRatios.Location = new System.Drawing.Point(194, 44);
+            this.btnRatios.Name = "btnRatios";
+            this.btnRatios.Size = new System.Drawing.Size(107, 33);
+            this.btnRatios.TabIndex = 5;
+            this.btnRatios.Text = "Ratios";
+            this.btnRatios.UseVisualStyleBackColor = true;
+            this.btnRatios.Click += new System.EventHandler(this.Click_Ratios);
             // 
             // btnIncome
             // 
@@ -119,10 +120,10 @@
             // 
             this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Controls.Add(this.button6);
-            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.btnStock);
             this.groupBox1.Controls.Add(this.btnIncome);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.btnBalance);
+            this.groupBox1.Controls.Add(this.btnRatios);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Coral;
             this.groupBox1.Location = new System.Drawing.Point(30, 151);
@@ -154,16 +155,17 @@
             this.button6.Text = "Cash Follow";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btnStock
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.ForeColor = System.Drawing.Color.Black;
-            this.button5.Location = new System.Drawing.Point(496, 44);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(122, 33);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Stock Market";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStock.ForeColor = System.Drawing.Color.Black;
+            this.btnStock.Location = new System.Drawing.Point(496, 44);
+            this.btnStock.Name = "btnStock";
+            this.btnStock.Size = new System.Drawing.Size(122, 33);
+            this.btnStock.TabIndex = 8;
+            this.btnStock.Text = "Stock Market";
+            this.btnStock.UseVisualStyleBackColor = true;
+            this.btnStock.Click += new System.EventHandler(this.Click_Stock);
             // 
             // btnInput
             // 
@@ -213,13 +215,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbInput;
         private System.Windows.Forms.TextBox tbOutput;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnBalance;
+        private System.Windows.Forms.Button btnRatios;
         private System.Windows.Forms.Button btnIncome;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnStock;
         private System.Windows.Forms.Button btnInput;
         private System.Windows.Forms.Button btnOutput;
     }

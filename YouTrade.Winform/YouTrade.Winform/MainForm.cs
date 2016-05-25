@@ -94,9 +94,25 @@ namespace YouTrade.Winform
         #region 7 click
         private void Click_Ratios(object sender, EventArgs e)
         {
-
+            btnRatios.Text = "Ratios Running...";
+            MoveToTempRatios();
+            ReadExcelAndSaveRatios();
+            btnRatios.Text = "Ratios";
         }
-
+        private void Click_Balance(object sender, EventArgs e)
+        {
+            btnBalance.Text = "Balance Running...";
+            MoveToTempBalance();
+            ReadExcelAndSaveBalance();
+            btnBalance.Text = "Balance";
+        }
+        private void Click_Stock(object sender, EventArgs e)
+        {
+            btnStock.Text = "Stock Running...";
+            MoveToTempStock();
+            ReadExcelAndSaveStock();
+            btnStock.Text = "Stock";
+        }
         private void button3_Click(object sender, EventArgs e)
         {
             btnIncome.Text = "Income Running...";
@@ -119,7 +135,7 @@ namespace YouTrade.Winform
         }
         #endregion
 
-        #region Move file
+        #region Move file to temp
         //Income
         void MoveToTempIncome()
         {
@@ -163,13 +179,190 @@ namespace YouTrade.Winform
                     }
                 }
             }
-            //Ratios
-            //Balance
-            //Stock
+        }
+        //Ratios
+        public void MoveToTempRatios()
+        {
+            // Chuyển file sang folder Temp
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("ratios") && !f.Contains("~$"));
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+            Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            foreach (string file in files)
+            {
+                try
+                {
+                    excelApp = new Microsoft.Office.Interop.Excel.Application();
+                    excelApp.FileValidation = MsoFileValidationMode.msoFileValidationSkip;
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    string fileEx = Path.GetExtension(file);
+                    string FullNameIn = tbInput.Text + fileName + fileEx;
+                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    if (!File.Exists(fullNameIn_In_Temp))
+                    {
+                        excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
+                        excelApp.DisplayAlerts = false;
+                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    if (excelWorkbook != null)
+                    {
+                        Marshal.FinalReleaseComObject(excelWorkbook);
+                        excelWorkbook = null;
+                    }
+                    if (excelApp != null)
+                    {
+                        excelApp.Quit();
+                        Marshal.FinalReleaseComObject(excelApp);
+                        excelApp = null;
+                    }
+                }
+            }
+        }
+        //Balance
+        public void MoveToTempBalance()
+        {
+            // Chuyển file sang folder Temp
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("balance") && !f.Contains("~$"));
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+            Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            foreach (string file in files)
+            {
+                try
+                {
+                    excelApp = new Microsoft.Office.Interop.Excel.Application();
+                    excelApp.FileValidation = MsoFileValidationMode.msoFileValidationSkip;
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    string fileEx = Path.GetExtension(file);
+                    string FullNameIn = tbInput.Text + fileName + fileEx;
+                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    if (!File.Exists(fullNameIn_In_Temp))
+                    {
+                        excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
+                        excelApp.DisplayAlerts = false;
+                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    if (excelWorkbook != null)
+                    {
+                        Marshal.FinalReleaseComObject(excelWorkbook);
+                        excelWorkbook = null;
+                    }
+                    if (excelApp != null)
+                    {
+                        excelApp.Quit();
+                        Marshal.FinalReleaseComObject(excelApp);
+                        excelApp = null;
+                    }
+                }
+            }
+        }
+        //Stock
+        public void MoveToTempStock()
+        {
+            // Chuyển file sang folder Temp
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("StockMarketData") && !f.Contains("~$"));
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+            Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            foreach (string file in files)
+            {
+                try
+                {
+                    excelApp = new Microsoft.Office.Interop.Excel.Application();
+                    excelApp.FileValidation = MsoFileValidationMode.msoFileValidationSkip;
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    string fileEx = Path.GetExtension(file);
+                    string FullNameIn = tbInput.Text + fileName + fileEx;
+                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    if (!File.Exists(fullNameIn_In_Temp))
+                    {
+                        excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
+                        excelApp.DisplayAlerts = false;
+                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    if (excelWorkbook != null)
+                    {
+                        Marshal.FinalReleaseComObject(excelWorkbook);
+                        excelWorkbook = null;
+                    }
+                    if (excelApp != null)
+                    {
+                        excelApp.Quit();
+                        Marshal.FinalReleaseComObject(excelApp);
+                        excelApp = null;
+                    }
+                }
+            }
         }
         #endregion
 
         #region Save to DB
+        private void SaveToDBRatio(System.Data.DataTable dt)
+        {
+            List<string> listIDFeild = new List<string>();
+
+            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
+            {
+                dbcon.Open();
+                //Ratios
+                for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                {
+                    for (int j = 4; j <= dt.Columns.Count - 1; j++)
+                    {
+                        if (dt.Rows[i][1].ToString().Trim() == "")
+                            break;
+                        string strQueryDetails = "INSERT INTO [dbo].[Ratio]([Ticker],[Year],[Quater],[ExploreName],[Value],[Unit]) VALUES(@ticker,@year,@quater,@explorename,@value,@unit)";
+                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+
+                        string pattern = dt.Rows[6][j].ToString();
+                        string[] st = pattern.Split(new string[] { "Year:", "Quarter:", "Unit:" }, StringSplitOptions.RemoveEmptyEntries);
+                        //Name
+                        string name = pattern.Substring(0, pattern.IndexOf("\nTrailing"));
+                        //Year
+                        int startPositionYear = pattern.IndexOf("Year:") + "Year:".Length;
+                        string year = pattern.Substring(startPositionYear, pattern.IndexOf("\nQuarter") - startPositionYear);
+                        int years = int.Parse(year);
+                        //Quater
+                        int startPositionQuarter = pattern.IndexOf("Quarter") + "Quarter:".Length;
+                        string quarter = pattern.Substring(startPositionQuarter, pattern.IndexOf("\nUnit") - startPositionQuarter);
+                        if (quarter == "Annual")
+                            quarter = "5";
+                        //Unit
+                        int startUnitPosition = pattern.IndexOf("Unit:") + "Unit:".Length;
+                        string unit = pattern.Substring(startUnitPosition, pattern.Length - startUnitPosition);
+                        if (true == (unit.Contains("\n")))
+                            unit = unit.Substring(0, unit.Length);
+
+                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
+                        sqlcmdD.Parameters.AddWithValue("@quater", Convert.ToInt16(quarter));
+                        sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
+                        sqlcmdD.ExecuteNonQuery();
+                    }
+                }
+                dbcon.Close();
+            }
+        }
         private void SaveToDBIncome(System.Data.DataTable dt)
         {
             //string[] arr = new string[3];
