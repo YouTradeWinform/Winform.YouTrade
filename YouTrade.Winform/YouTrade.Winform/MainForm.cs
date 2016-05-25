@@ -108,7 +108,7 @@ namespace YouTrade.Winform
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
-                                SaveToDBIncome(tbl);
+                               // SaveToDBIncome(tbl);
                                 break;
                             }
 
