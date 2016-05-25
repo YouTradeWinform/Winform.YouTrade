@@ -63,6 +63,7 @@
             this.tbuser.Name = "tbuser";
             this.tbuser.Size = new System.Drawing.Size(206, 22);
             this.tbuser.TabIndex = 2;
+            this.tbuser.Text = "ytanalystrecom";
             // 
             // tbpass
             // 
@@ -72,6 +73,7 @@
             this.tbpass.PasswordChar = '*';
             this.tbpass.Size = new System.Drawing.Size(206, 22);
             this.tbpass.TabIndex = 3;
+            this.tbpass.Text = "12341234";
             // 
             // button1
             // 
