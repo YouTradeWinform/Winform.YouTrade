@@ -8,3 +8,6 @@ D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Properti
 D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csproj.GenerateResource.Cache
 D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.exe
 D:\Cirtech\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.pdb
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\bin\Debug\YouTrade.Winform.exe.config
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.exe
+C:\Users\TranThanh\WinformFinancialData\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.pdb
