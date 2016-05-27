@@ -37,10 +37,11 @@
             this.btnIncome = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.btnStock = new System.Windows.Forms.Button();
             this.btnInput = new System.Windows.Forms.Button();
             this.btnOutput = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.bntCashFlow = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +72,7 @@
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(693, 22);
             this.tbInput.TabIndex = 2;
+            this.tbInput.TextChanged += new System.EventHandler(this.tbInput_TextChanged);
             // 
             // tbOutput
             // 
@@ -118,8 +120,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.bntCashFlow);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button7);
-            this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Controls.Add(this.btnStock);
             this.groupBox1.Controls.Add(this.btnIncome);
             this.groupBox1.Controls.Add(this.btnBalance);
@@ -143,17 +146,7 @@
             this.button7.TabIndex = 10;
             this.button7.Text = "Info";
             this.button7.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.ForeColor = System.Drawing.Color.Black;
-            this.button6.Location = new System.Drawing.Point(819, 44);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(153, 33);
-            this.button6.TabIndex = 9;
-            this.button6.Text = "Cash Follow";
-            this.button6.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // btnStock
             // 
@@ -189,6 +182,30 @@
             this.btnOutput.UseVisualStyleBackColor = true;
             this.btnOutput.Click += new System.EventHandler(this.Click_Output);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(673, 44);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(111, 33);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Info";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // bntCashFlow
+            // 
+            this.bntCashFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bntCashFlow.ForeColor = System.Drawing.Color.Black;
+            this.bntCashFlow.Location = new System.Drawing.Point(837, 44);
+            this.bntCashFlow.Name = "bntCashFlow";
+            this.bntCashFlow.Size = new System.Drawing.Size(99, 33);
+            this.bntCashFlow.TabIndex = 10;
+            this.bntCashFlow.Text = "Cash Flow";
+            this.bntCashFlow.UseVisualStyleBackColor = true;
+            this.bntCashFlow.Click += new System.EventHandler(this.bntCashFlow_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -220,9 +237,10 @@
         private System.Windows.Forms.Button btnIncome;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnStock;
         private System.Windows.Forms.Button btnInput;
         private System.Windows.Forms.Button btnOutput;
+        private System.Windows.Forms.Button bntCashFlow;
+        private System.Windows.Forms.Button button1;
     }
 }
