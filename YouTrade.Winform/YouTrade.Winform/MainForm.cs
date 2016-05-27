@@ -26,6 +26,7 @@ namespace YouTrade.Winform
         DataSet dsSource = null;
         DataSet dsSource1 = null;
         int demIncome = 0, demBasicInfo = 0;
+        bool KTIncome = false;
 
         #region Click_Input_Output
         private void Click_Input(object sender, EventArgs e)
@@ -125,6 +126,14 @@ namespace YouTrade.Winform
             btnIncome.Text = "Income Running...";
             MoveToTempIncome();
             ReadExcelAndSaveIncome();
+
+            CheckIfFileInTemp();
+
+            btnIncome.Text = "Income";
+        }
+        void CheckIfFileInTemp()
+        {
+
             btnIncome.Text = "Income";
         }
         #endregion
