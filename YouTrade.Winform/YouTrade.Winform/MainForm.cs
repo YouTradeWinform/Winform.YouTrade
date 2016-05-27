@@ -22,7 +22,8 @@ namespace YouTrade.Winform
        
         string pathIn = "", pathOut = "";
         string pathTempIncome = "", pathTempBasicInfo = "";
-        string pathTempRatios="", pathTempBalance="", pathTempStock = "";
+        string pathTempRatios = "", pathTempBalance = "", pathTempStock = "";
+        string pathTempCashFlow = "";
         DataSet dsSource = null;
         DataSet dsSource1 = null;
         int demIncome = 0, demBasicInfo = 0;
@@ -89,6 +90,12 @@ namespace YouTrade.Winform
             if (!Directory.Exists(pathTempStock))
             {
                 Directory.CreateDirectory(pathTempStock);
+            }
+            //Path Temp CashFlow
+            pathTempCashFlow = System.Windows.Forms.Application.StartupPath + "\\Output\\CashFlow\\Temp\\";
+            if(!Directory.Exists(pathTempCashFlow))
+            {
+                Directory.CreateDirectory(pathTempCashFlow);
             }
         }
         #endregion
@@ -327,7 +334,52 @@ namespace YouTrade.Winform
             }
         }
         #endregion
-
+        #region Move file to temp
+        //CashFlow
+        void MoveToTempCashFlow()
+        {
+            // Chuyển file sang folder Temp
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+            Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            foreach (string file in files)
+            {
+                try
+                {
+                    excelApp = new Microsoft.Office.Interop.Excel.Application();
+                    excelApp.FileValidation = MsoFileValidationMode.msoFileValidationSkip;
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    string fileEx = Path.GetExtension(file);
+                    string FullNameIn = tbInput.Text + fileName + fileEx;
+                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    if (!File.Exists(fullNameIn_In_Temp))
+                    {
+                        excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
+                        excelApp.DisplayAlerts = false;
+                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    if (excelWorkbook != null)
+                    {
+                        Marshal.FinalReleaseComObject(excelWorkbook);
+                        excelWorkbook = null;
+                    }
+                    if (excelApp != null)
+                    {
+                        excelApp.Quit();
+                        Marshal.FinalReleaseComObject(excelApp);
+                        excelApp = null;
+                    }
+                }
+            }
+        }
+        #endregion
         #region Save to DB
         private void SaveToDBRatio(System.Data.DataTable dt)
         {
@@ -553,6 +605,25 @@ namespace YouTrade.Winform
                 File.Delete(fileName);
             }
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bntCashFlow_Click(object sender, EventArgs e)
+        {
+            bntCashFlow.Text = "CashFlow Running...";
+            MoveToTempCashFlow();
+            ReadExcelAndSaveCashFlow();
+            bntCashFlow.Text = "CashFlow";
+        }
+
         //Stock Market Data
         private void StoreFileStock(string fileName)
         {
@@ -566,6 +637,11 @@ namespace YouTrade.Winform
                 File.Copy(fileName, tbOutput.Text + "\\Stock\\" + filenameOnly, true);
                 File.Delete(fileName);
             }
+        }
+
+        private void tbInput_TextChanged(object sender, EventArgs e)
+        {
+
         }
         #endregion
 
@@ -707,6 +783,44 @@ namespace YouTrade.Winform
             {
             }
         }
+        //Income
+        void ReadExcelAndSaveCashFlow()
+        {
+            try
+            {
+                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                foreach (string file in files1)
+                {
+                    try
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(file);
+
+                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        if (!File.Exists(fullNameIn_In_Out))
+                        {
+
+                            dsSource = GetDatasetFromExcel(file);
+                            foreach (System.Data.DataTable tbl in dsSource.Tables)
+                            {
+                                break;
+                            }
+
+                        }
+                        StoreFileIncome(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         #endregion
     }
+    
 }
+
+
+
