@@ -18,7 +18,8 @@ namespace YouTrade.Winform
 {
     public partial class MainForm : Form
     {
-        string sqlConnectionString = ConfigurationManager.AppSettings["connectionString"];
+        string sqlConnectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+       
         string pathIn = "", pathOut = "";
         string pathTempIncome = "", pathTempBasicInfo = "";
         string pathTempRatios="", pathTempBalance="", pathTempStock = "";
@@ -120,14 +121,14 @@ namespace YouTrade.Winform
             MoveToTempIncome();
             ReadExcelAndSaveIncome();
 
-            CheckIfFileInTemp();
+            CheckIfFileInTempIncome();
 
             btnIncome.Text = "Income";
         }
-        void CheckIfFileInTemp()
+        void CheckIfFileInTempIncome()
         {
 
-            btnIncome.Text = "Income";
+            
         }
         #endregion
 
@@ -168,6 +169,10 @@ namespace YouTrade.Winform
                         excelApp.DisplayAlerts = false;
                         string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    }
+                    if (File.Exists(FullNameIn))
+                    {
+                        File.Delete(FullNameIn);
                     }
                 }
                 catch (Exception ex)
@@ -379,67 +384,72 @@ namespace YouTrade.Winform
             //arr[1] = "Quarter:";
             //arr[2] = "Unit:";
             //string[] arrOut;
-            List<string> listIDFeild = new List<string>();
+           // List<string> listIDFeild = new List<string>();
             int dong = 0, cot = 0;
-            //demIncome = (dt.Columns.Count - 5) * (dt.Rows.Count - 9);
             using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
             {
                 dbcon.Open();
-                // Save Feild
-                for (int i = 4; i <= dt.Columns.Count - 1; i++)
-                {
-                    string strQueryFeild = "IF NOT EXISTS (SELECT 1 FROM DBO.Income_Feild WHERE IDfeild=@idfeild ) BEGIN INSERT INTO [dbo].[Income_Feild] ([IDFeild],[unit]) VALUES (@idfeild,@unit) END";
-                    SqlCommand sqlcmd = new SqlCommand(strQueryFeild, dbcon);
-                    string pattern = dt.Rows[6][i].ToString();
-                    if (pattern.Trim() == "")
-                        break;
-                    //  string[] st = pattern.Split(new string[] { "Consolidated Year:", "Quarter:", "Unit:" }, StringSplitOptions.RemoveEmptyEntries);
-                    // print array st
-
-                    // Get Name
-                    int startPositionName = pattern.IndexOf(".") + ".".Length;
-                    string patternT = pattern.Substring(startPositionName, pattern.Length - startPositionName);
-
-                    int startPositionNameDot = patternT.IndexOf(".") + ".".Length;
-                    string patternTDot = patternT.Substring(startPositionNameDot, patternT.Length - startPositionNameDot);
-
-                    string name = patternTDot.Substring(0, patternTDot.IndexOf("Consolidated\nYear:"));
-                    // Get Unit
-                    int startUnitPosition = patternTDot.IndexOf("Unit:") + "Unit:".Length;
-                    string unit = patternTDot.Substring(startUnitPosition, patternTDot.Length - startUnitPosition);
-
-                    sqlcmd.Parameters.AddWithValue("@idfeild", name.Trim());
-                    sqlcmd.Parameters.AddWithValue("@unit", unit.Trim());
-
-                    sqlcmd.ExecuteNonQuery();
-                    cot++;
-                }
 
 
 
-                // Save Income_Financial
-                for (int i = 8; i <= dt.Rows.Count - 1; i++)
-                {
-                    try
-                    {
-                        if (dt.Rows[i][1].ToString().Trim() == "")
-                            break;
-                        // Save to Finance
-                        string strQueryFinance = "IF NOT EXISTS (SELECT 1 FROM DBO.Income_Financial WHERE Ticker=@Ticker ) BEGIN INSERT INTO [dbo].[Income_Financial] ([Ticker],[Name],[Exchange]) VALUES (@ticker,@name,@exchange) END";
-                        SqlCommand sqlcmd = new SqlCommand(strQueryFinance, dbcon);
-                        sqlcmd.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
-                        sqlcmd.Parameters.AddWithValue("@name", dt.Rows[i][2].ToString().Trim());
-                        sqlcmd.Parameters.AddWithValue("@exchange", dt.Rows[i][3].ToString().Trim());
-                        sqlcmd.ExecuteNonQuery();
-                        dong++;
-                    }
-                    catch
-                    {
-                        //listBox2.Items.Add("SaveIncomeFinancial: " + i.ToString().Trim());
-                    }
-                }
+                //// Save Feild
+                //for (int i = 4; i <= dt.Columns.Count - 1; i++)
+                //{
+                //    string strQueryFeild = "IF NOT EXISTS (SELECT 1 FROM DBO.Income_Feild WHERE IDfeild=@idfeild ) BEGIN INSERT INTO [dbo].[Income_Feild] ([IDFeild],[unit]) VALUES (@idfeild,@unit) END";
+                //    SqlCommand sqlcmd = new SqlCommand(strQueryFeild, dbcon);
+                //    string pattern = dt.Rows[6][i].ToString();
+                //    if (pattern.Trim() == "")
+                //        break;
+                //    //  string[] st = pattern.Split(new string[] { "Consolidated Year:", "Quarter:", "Unit:" }, StringSplitOptions.RemoveEmptyEntries);
+                //    // print array st
 
-                demIncome += dong * cot;
+                //    // Get Name
+                //    int startPositionName = pattern.IndexOf(".") + ".".Length;
+                //    string patternT = pattern.Substring(startPositionName, pattern.Length - startPositionName);
+
+                //    int startPositionNameDot = patternT.IndexOf(".") + ".".Length;
+                //    string patternTDot = patternT.Substring(startPositionNameDot, patternT.Length - startPositionNameDot);
+
+                //    string name = patternTDot.Substring(0, patternTDot.IndexOf("Consolidated\nYear:"));
+                //    // Get Unit
+                //    int startUnitPosition = patternTDot.IndexOf("Unit:") + "Unit:".Length;
+                //    string unit = patternTDot.Substring(startUnitPosition, patternTDot.Length - startUnitPosition);
+
+                //    sqlcmd.Parameters.AddWithValue("@idfeild", name.Trim());
+                //    sqlcmd.Parameters.AddWithValue("@unit", unit.Trim());
+
+                //    sqlcmd.ExecuteNonQuery();
+                //    cot++;
+                //}
+
+
+
+
+                //// Save Income_Financial
+                //for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                //{
+                //    try
+                //    {
+                //        if (dt.Rows[i][1].ToString().Trim() == "")
+                //            break;
+                //        // Save to Finance
+                //        string strQueryFinance = "IF NOT EXISTS (SELECT 1 FROM DBO.Income_Financial WHERE Ticker=@Ticker ) BEGIN INSERT INTO [dbo].[Income_Financial] ([Ticker],[Name],[Exchange]) VALUES (@ticker,@name,@exchange) END";
+                //        SqlCommand sqlcmd = new SqlCommand(strQueryFinance, dbcon);
+                //        sqlcmd.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                //        sqlcmd.Parameters.AddWithValue("@name", dt.Rows[i][2].ToString().Trim());
+                //        sqlcmd.Parameters.AddWithValue("@exchange", dt.Rows[i][3].ToString().Trim());
+                //        sqlcmd.ExecuteNonQuery();
+                //        dong++;
+                //    }
+                //    catch
+                //    {
+                //        //listBox2.Items.Add("SaveIncomeFinancial: " + i.ToString().Trim());
+                //    }
+                //}
+
+
+
+               // demIncome += dong * cot;
                 for (int i = 8; i <= dt.Rows.Count - 1; i++)
                 {
                     try
@@ -449,8 +459,10 @@ namespace YouTrade.Winform
                         for (int j = 4; j <= dt.Columns.Count - 1; j++)
                         {
 
-                            string strQueryDetails = "INSERT INTO [dbo].[Income_Details_Feild]([Ticker] ,[IDFeild] ,[Year],[IDQuarter],[Value]) VALUES(@ticker,@explore,@year,@quarter,@value)";
-                            SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+                          //  string strQueryDetails = "INSERT INTO [dbo].[Income_Details_Feild]([Ticker] ,[IDFeild] ,[Year],[IDQuarter],[Value]) VALUES(@ticker,@explore,@year,@quarter,@value)";
+                            string strq = "INSERT INTO [dbo].[Income] ([Ticker],[Year] ,[Quater]  ,[Name] ,[Value] ,[Unit]) VALUES(@ticker,@year,@quarter,@feildname,@value,@unit)";
+                            SqlCommand sqlcmdD = new SqlCommand(strq, dbcon);
+
                             sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
                             string pattern = dt.Rows[6][j].ToString();
                             // string[] st = pattern.Split(new string[] { "Year:", "Quarter:", "Unit:" }, StringSplitOptions.RemoveEmptyEntries);
@@ -472,10 +484,16 @@ namespace YouTrade.Winform
                             int startPositionQuarter = patternTDot.IndexOf("Quarter") + "Quarter:".Length;
                             string quarter = patternTDot.Substring(startPositionQuarter, patternTDot.IndexOf("Unit") - startPositionQuarter);
 
-                            sqlcmdD.Parameters.AddWithValue("@explore", name.ToString().Trim());
+                            //Get unit
+                            int startPositionUnit = patternTDot.IndexOf("Unit") + "Unit:".Length;
+                            string unit = patternTDot.Substring(startPositionUnit, patternTDot.Length - startPositionUnit);
+                            //Annual
+
+                            sqlcmdD.Parameters.AddWithValue("@feildname", name.ToString().Trim());
                             sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(year));
-                            sqlcmdD.Parameters.AddWithValue("@quarter", quarter.ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@quarter", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5 );
                             sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
                             sqlcmdD.ExecuteNonQuery();
                             if (dt.Rows[i][1].ToString().Trim() == "")
                                 break;
@@ -564,13 +582,14 @@ namespace YouTrade.Winform
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        string fullNameIn_In_Out = tbOutput.Text + "Income\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
 
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                SaveToDBIncome(tbl);
                                 break;
                             }
 
