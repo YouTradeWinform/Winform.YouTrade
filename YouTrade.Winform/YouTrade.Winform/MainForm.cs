@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -125,8 +126,12 @@ namespace YouTrade.Winform
         private void button3_Click(object sender, EventArgs e)
         {
             btnIncome.Text = "Income Running...";
+
             MoveToTempIncome();
-            ReadExcelAndSaveIncome();
+            txtFileName.Text = "Done!";
+            progressBar1.Value = 0;
+
+           // ReadExcelAndSaveIncome();
 
             CheckIfFileInTempIncome();
 
@@ -160,8 +165,18 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+
+           // progressBar1 = new ProgressBar();
+            //progressBar1.Value = 0; // progressbar
+            progressBar1.Maximum = files.Count(); // progressbar
+            progressBar1.Step = 1; // progressbar
+
             foreach (string file in files)
             {
+               // progressBar1.Value++; // progressbar
+                txtFileName.Text = "Moving... " + Path.GetFileName(file); // progressbar
+
+
                 try
                 {
                     excelApp = new Microsoft.Office.Interop.Excel.Application();
@@ -177,10 +192,10 @@ namespace YouTrade.Winform
                         string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
-                    if (File.Exists(FullNameIn))
-                    {
-                        File.Delete(FullNameIn);
-                    }
+                    //if (File.Exists(FullNameIn))
+                    //{
+                    //    File.Delete(FullNameIn);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -199,8 +214,18 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
+                progressBar1.Value++; // progressbar
+
+
             }
+            progressBar1.Value= progressBar1.Maximum;
+            Thread.Sleep(1000);
+
         }
+
+
+
+
         //Ratios
         public void MoveToTempRatios()
         {
