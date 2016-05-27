@@ -36,12 +36,13 @@
             this.btnRatios = new System.Windows.Forms.Button();
             this.btnIncome = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.bntCashFlow = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.btnStock = new System.Windows.Forms.Button();
             this.btnInput = new System.Windows.Forms.Button();
             this.btnOutput = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.bntCashFlow = new System.Windows.Forms.Button();
+            this.btnNote = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,6 +121,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnNote);
             this.groupBox1.Controls.Add(this.bntCashFlow);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button7);
@@ -131,10 +133,34 @@
             this.groupBox1.ForeColor = System.Drawing.Color.Coral;
             this.groupBox1.Location = new System.Drawing.Point(30, 151);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(992, 107);
+            this.groupBox1.Size = new System.Drawing.Size(1115, 107);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Actions";
+            // 
+            // bntCashFlow
+            // 
+            this.bntCashFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bntCashFlow.ForeColor = System.Drawing.Color.Black;
+            this.bntCashFlow.Location = new System.Drawing.Point(811, 44);
+            this.bntCashFlow.Name = "bntCashFlow";
+            this.bntCashFlow.Size = new System.Drawing.Size(147, 33);
+            this.bntCashFlow.TabIndex = 10;
+            this.bntCashFlow.Text = "Cash Flow";
+            this.bntCashFlow.UseVisualStyleBackColor = true;
+            this.bntCashFlow.Click += new System.EventHandler(this.bntCashFlow_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(673, 44);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(111, 33);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Info";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button7_Click);
             // 
             // button7
             // 
@@ -182,35 +208,23 @@
             this.btnOutput.UseVisualStyleBackColor = true;
             this.btnOutput.Click += new System.EventHandler(this.Click_Output);
             // 
-            // button1
+            // btnNote
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(673, 44);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 33);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Info";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // bntCashFlow
-            // 
-            this.bntCashFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bntCashFlow.ForeColor = System.Drawing.Color.Black;
-            this.bntCashFlow.Location = new System.Drawing.Point(837, 44);
-            this.bntCashFlow.Name = "bntCashFlow";
-            this.bntCashFlow.Size = new System.Drawing.Size(99, 33);
-            this.bntCashFlow.TabIndex = 10;
-            this.bntCashFlow.Text = "Cash Flow";
-            this.bntCashFlow.UseVisualStyleBackColor = true;
-            this.bntCashFlow.Click += new System.EventHandler(this.bntCashFlow_Click);
+            this.btnNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNote.ForeColor = System.Drawing.Color.Black;
+            this.btnNote.Location = new System.Drawing.Point(974, 44);
+            this.btnNote.Name = "btnNote";
+            this.btnNote.Size = new System.Drawing.Size(86, 33);
+            this.btnNote.TabIndex = 10;
+            this.btnNote.Text = "Note";
+            this.btnNote.UseVisualStyleBackColor = true;
+            this.btnNote.Click += new System.EventHandler(this.btnNote_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1055, 292);
+            this.ClientSize = new System.Drawing.Size(1109, 277);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.btnInput);
             this.Controls.Add(this.groupBox1);
@@ -220,6 +234,7 @@
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -242,5 +257,6 @@
         private System.Windows.Forms.Button btnOutput;
         private System.Windows.Forms.Button bntCashFlow;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnNote;
     }
 }
