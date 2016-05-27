@@ -339,7 +339,7 @@ namespace YouTrade.Winform
         void MoveToTempCashFlow()
         {
             // Chuyển file sang folder Temp
-            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("cashflow") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
             foreach (string file in files)
@@ -351,12 +351,12 @@ namespace YouTrade.Winform
                     string fileName = Path.GetFileNameWithoutExtension(file);
                     string fileEx = Path.GetExtension(file);
                     string FullNameIn = tbInput.Text + fileName + fileEx;
-                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    string fullNameIn_In_Temp = pathTempCashFlow + fileName.Replace(".", string.Empty) + ".xls";
                     if (!File.Exists(fullNameIn_In_Temp))
                     {
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
-                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        string fileNameOut = pathTempCashFlow + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
                 }
@@ -560,6 +560,65 @@ namespace YouTrade.Winform
             }
 
         }
+        //Save to DB CashFlow
+        private void SaveToDBCashFlow(System.Data.DataTable dt)
+        {                        
+            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
+            {
+                dbcon.Open();               
+                for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                {
+                    try
+                    {
+                        if (dt.Rows[i][1].ToString().Trim() == "")
+                            break;
+                        for (int j = 4; j <= dt.Columns.Count - 1; j++)
+                        {                            
+                            string strq = "INSERT INTO [dbo].[CashFlow] ([Ticker],[Year] ,[Quater]  ,[Name] ,[Value] ,[Unit]) VALUES(@ticker,@year,@quarter,@feildname,@value,@unit)";
+                            SqlCommand sqlcmdD = new SqlCommand(strq, dbcon);
+
+                            sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                            string pattern = dt.Rows[6][j].ToString();
+                            // Get Name
+                            int startPositionName = pattern.IndexOf(".") + ".".Length;
+                            string patternT = pattern.Substring(startPositionName, pattern.Length - startPositionName);
+
+                            int startPositionNameDot = patternT.IndexOf(".") + ".".Length;
+                            string patternTDot = patternT.Substring(startPositionNameDot, patternT.Length - startPositionNameDot);
+
+                            string name = patternTDot.Substring(0, patternTDot.IndexOf("Consolidated\nYear:"));
+
+                            // Get Year
+                            int startPositionYear = patternTDot.IndexOf("Consolidated\nYear:") + "Consolidated\nYear:".Length;
+                            string year = patternTDot.Substring(startPositionYear, patternTDot.IndexOf("Quarter") - startPositionYear);
+
+                            // Get Quarter
+                            int startPositionQuarter = patternTDot.IndexOf("Quarter") + "Quarter:".Length;
+                            string quarter = patternTDot.Substring(startPositionQuarter, patternTDot.IndexOf("Unit") - startPositionQuarter);
+
+                            //Get unit
+                            int startPositionUnit = patternTDot.IndexOf("Unit") + "Unit:".Length;
+                            string unit = patternTDot.Substring(startPositionUnit, patternTDot.Length - startPositionUnit);
+                            //Annual
+
+                            sqlcmdD.Parameters.AddWithValue("@feildname", name.ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(year));
+                            sqlcmdD.Parameters.AddWithValue("@quarter", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
+                            sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
+                            sqlcmdD.ExecuteNonQuery();
+                            if (dt.Rows[i][1].ToString().Trim() == "")
+                                break;
+                        }
+                    }
+                    catch
+                    {                       
+                    }
+                }
+                dbcon.Close();
+            }
+
+        }
         #endregion
 
         #region Store file
@@ -574,6 +633,20 @@ namespace YouTrade.Winform
                     Directory.CreateDirectory(tbOutput.Text + "\\Income\\");
                 }
                 File.Copy(fileName, tbOutput.Text + "\\Income\\" + filenameOnly, true);
+                File.Delete(fileName);
+            }
+        }
+        //Cashflow
+        private void StoreFileCashFlow(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                string filenameOnly = Path.GetFileName(fileName);
+                if (!Directory.Exists(tbOutput.Text + "\\cashflow\\"))
+                {
+                    Directory.CreateDirectory(tbOutput.Text + "\\cashflow\\");
+                }
+                File.Copy(fileName, tbOutput.Text + "\\cashflow\\" + filenameOnly, true);
                 File.Delete(fileName);
             }
         }
@@ -783,30 +856,31 @@ namespace YouTrade.Winform
             {
             }
         }
-        //Income
+        //CashFlow
         void ReadExcelAndSaveCashFlow()
         {
             try
             {
-                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                var files1 = Directory.GetFiles(pathTempCashFlow, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
                 foreach (string file in files1)
                 {
                     try
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        string fullNameIn_In_Out = tbOutput.Text + "cashflow\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
 
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                SaveToDBCashFlow(tbl);
                                 break;
                             }
 
                         }
-                        StoreFileIncome(file);
+                        StoreFileCashFlow(file);
                     }
                     catch
                     {
