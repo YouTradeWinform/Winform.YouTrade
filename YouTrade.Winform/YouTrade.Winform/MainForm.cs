@@ -137,7 +137,7 @@ namespace YouTrade.Winform
             txtFileName.Text = "Done!";
             progressBar1.Value = 0;
 
-            ReadExcelAndSaveIncome();
+           // ReadExcelAndSaveIncome();
 
             CheckIfFileInTempIncome();
 
@@ -145,12 +145,8 @@ namespace YouTrade.Winform
         }
         void CheckIfFileInTempIncome()
         {
-            var files = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
-            if (files.Count() > 0)
-            {
-                btnIncome.PerformClick();
-            }
 
+            
         }
         #endregion
 
@@ -176,19 +172,10 @@ namespace YouTrade.Winform
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
 
-            // progressBar1 = new ProgressBar();
+           // progressBar1 = new ProgressBar();
             //progressBar1.Value = 0; // progressbar
-            // progressBar1.Maximum = 100;// files.Count(); // progressbar
-            //  progressBar1.Step = 1; // progressbar
-
-            progressBar1.Maximum = 1000;
-            progressBar1.Step = 1;
-            progressBar1.Value = 0;
-            for (int i = 0; i < 1000; i++)
-            {
-                progressBar1.Value++;
-                // Thread.Sleep(1);
-            }
+            progressBar1.Maximum = files.Count(); // progressbar
+            progressBar1.Step = 1; // progressbar
 
             foreach (string file in files)
             {
@@ -233,12 +220,12 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-              //  progressBar1.Value++; // progressbar
+                progressBar1.Value++; // progressbar
 
 
             }
-       //     progressBar1.Value = 89;// progressBar1.Maximum;
-        //    Thread.Sleep(10000);
+            progressBar1.Value= progressBar1.Maximum;
+            Thread.Sleep(1000);
 
         }
 
@@ -881,14 +868,7 @@ namespace YouTrade.Winform
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //progressBar1.Maximum = 1000;
-            //progressBar1.Step = 1;
-            //progressBar1.Value = 0;
-            //for (int i = 0; i < 1000; i++)
-            //{
-            //    progressBar1.Value++;
-            //    // Thread.Sleep(1);
-            //}
+
         }
 
         private void btnNote_Click(object sender, EventArgs e)
@@ -920,7 +900,7 @@ namespace YouTrade.Winform
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
-                              //  SaveToDBIncome(tbl);
+                                SaveToDBIncome(tbl);
                                 break;
                             }
 
