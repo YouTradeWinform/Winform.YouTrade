@@ -112,18 +112,18 @@ namespace YouTrade.Winform
         {
             btnRatios.Text = "Ratios Running...";
             MoveToTempRatios();
+            txtFileName.Text = "Done!";
             progressBar1.Value = 0;
             ReadExcelAndSaveRatios();
-            txtFileName.Text = "Done!";
             btnRatios.Text = "Ratios";
         }
         private void Click_Balance(object sender, EventArgs e)
         {
             btnBalance.Text = "Balance Running...";
             MoveToTempBalance();
+            txtFileName.Text = "Done!";
             progressBar1.Value = 0;
             ReadExcelAndSaveBalance();
-            txtFileName.Text = "Done!";
             btnBalance.Text = "Balance";
         }
         private void Click_Stock(object sender, EventArgs e)
@@ -248,11 +248,18 @@ namespace YouTrade.Winform
         public void MoveToTempRatios()
         {
             // Chuyển file sang folder Temp
-            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("ratios") && !f.Contains("~$"));
+            var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("ratio") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            progressBar1.Maximum = files.Count(); // progressbar
-            progressBar1.Step = 1; // progressbar
+            //progressBar1.Maximum = 1000;
+            //progressBar1.Step = 1;
+            //progressBar1.Value = 0;
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    progressBar1.Value++;
+            //    // Thread.Sleep(1);
+            //}
+
             foreach (string file in files)
             {
                 try
@@ -262,12 +269,12 @@ namespace YouTrade.Winform
                     string fileName = Path.GetFileNameWithoutExtension(file);
                     string fileEx = Path.GetExtension(file);
                     string FullNameIn = tbInput.Text + fileName + fileEx;
-                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    string fullNameIn_In_Temp = pathTempRatios + fileName.Replace(".", string.Empty) + ".xls";
                     if (!File.Exists(fullNameIn_In_Temp))
                     {
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
-                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        string fileNameOut = pathTempRatios + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
                 }
@@ -288,10 +295,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                progressBar1.Value++;
+              //  progressBar1.Value++;
             }
-            progressBar1.Value = progressBar1.Maximum;
-            Thread.Sleep(1000);
+         //   progressBar1.Value = progressBar1.Maximum;
+           // Thread.Sleep(1000);
         }
         //Balance
         public void MoveToTempBalance()
@@ -300,8 +307,15 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("balance") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            progressBar1.Maximum = files.Count(); // progressbar
-            progressBar1.Step = 1; // progressbar
+            //progressBar1.Maximum = 1000;
+            //progressBar1.Step = 1;
+            //progressBar1.Value = 0;
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    progressBar1.Value++;
+            //    // Thread.Sleep(1);
+            //}
+
             foreach (string file in files)
             {
                 try
@@ -311,12 +325,12 @@ namespace YouTrade.Winform
                     string fileName = Path.GetFileNameWithoutExtension(file);
                     string fileEx = Path.GetExtension(file);
                     string FullNameIn = tbInput.Text + fileName + fileEx;
-                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    string fullNameIn_In_Temp = pathTempBalance + fileName.Replace(".", string.Empty) + ".xls";
                     if (!File.Exists(fullNameIn_In_Temp))
                     {
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
-                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        string fileNameOut = pathTempBalance + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
                 }
@@ -337,10 +351,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                progressBar1.Value++;
+                //progressBar1.Value++;
             }
-            progressBar1.Value = progressBar1.Maximum;
-            Thread.Sleep(1000);
+           // progressBar1.Value = progressBar1.Maximum;
+            //Thread.Sleep(1000);
         }
         //Stock
         public void MoveToTempStock()
@@ -349,8 +363,15 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("StockMarketData") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            progressBar1.Maximum = files.Count(); // progressbar
-            progressBar1.Step = 1; // progressbar
+            //progressBar1.Maximum = 1000;
+            //progressBar1.Step = 1;
+            //progressBar1.Value = 0;
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    progressBar1.Value++;
+            //    // Thread.Sleep(1);
+            //}
+
             foreach (string file in files)
             {
                 try
@@ -360,12 +381,12 @@ namespace YouTrade.Winform
                     string fileName = Path.GetFileNameWithoutExtension(file);
                     string fileEx = Path.GetExtension(file);
                     string FullNameIn = tbInput.Text + fileName + fileEx;
-                    string fullNameIn_In_Temp = pathTempIncome + fileName.Replace(".", string.Empty) + ".xls";
+                    string fullNameIn_In_Temp = pathTempStock + fileName.Replace(".", string.Empty) + ".xls";
                     if (!File.Exists(fullNameIn_In_Temp))
                     {
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
-                        string fileNameOut = pathTempIncome + fileName.Replace(".", string.Empty);
+                        string fileNameOut = pathTempStock + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
                 }
@@ -386,10 +407,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                progressBar1.Value++;
+                //progressBar1.Value++;
             }
-            progressBar1.Value = progressBar1.Maximum;
-            Thread.Sleep(1000);
+            //progressBar1.Value = progressBar1.Maximum;
+            //Thread.Sleep(1000);
         }
         #endregion
         #region Move file to temp
@@ -1034,7 +1055,7 @@ namespace YouTrade.Winform
         {
             try
             {
-                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                var files1 = Directory.GetFiles(pathTempRatios, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
                 foreach (string file in files1)
                 {
                     try
@@ -1069,7 +1090,7 @@ namespace YouTrade.Winform
         {
             try
             {
-                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                var files1 = Directory.GetFiles(pathTempBalance, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
                 foreach (string file in files1)
                 {
                     try
@@ -1104,7 +1125,7 @@ namespace YouTrade.Winform
         {
             try
             {
-                var files1 = Directory.GetFiles(pathTempIncome, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
+                var files1 = Directory.GetFiles(pathTempStock, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls"));
                 foreach (string file in files1)
                 {
                     try
