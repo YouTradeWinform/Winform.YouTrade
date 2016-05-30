@@ -226,13 +226,13 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(121, 268);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(901, 23);
+            this.progressBar1.Size = new System.Drawing.Size(376, 23);
             this.progressBar1.TabIndex = 10;
             // 
             // txtFileName
             // 
             this.txtFileName.AutoSize = true;
-            this.txtFileName.Location = new System.Drawing.Point(65, 278);
+            this.txtFileName.Location = new System.Drawing.Point(118, 316);
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(37, 13);
             this.txtFileName.TabIndex = 11;
@@ -242,7 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1109, 332);
+            this.ClientSize = new System.Drawing.Size(1109, 358);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnOutput);

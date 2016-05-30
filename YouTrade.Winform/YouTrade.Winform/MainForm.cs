@@ -177,10 +177,21 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-           // progressBar1 = new ProgressBar();
+            // progressBar1 = new ProgressBar();
             //progressBar1.Value = 0; // progressbar
-            progressBar1.Maximum = files.Count(); // progressbar
-            progressBar1.Step = 1; // progressbar
+            // progressBar1.Maximum = files.Count(); // progressbar
+            //   progressBar1.Step = 1; // progressbar.
+
+
+            progressBar1.Maximum = 1000;
+            progressBar1.Step = 1;
+            progressBar1.Value = 0;
+            for (int i = 0; i < 1000; i++)
+            {
+                progressBar1.Value++;
+                // Thread.Sleep(1);
+            }
+
 
             foreach (string file in files)
             {
@@ -225,7 +236,7 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                progressBar1.Value++; // progressbar
+                //progressBar1.Value++; // progressbar
 
 
             }
