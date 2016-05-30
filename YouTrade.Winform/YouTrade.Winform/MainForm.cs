@@ -139,11 +139,13 @@ namespace YouTrade.Winform
         {
             btnIncome.Text = "Income Running...";
 
+          
+
             MoveToTempIncome();
             txtFileName.Text = "Done!";
             progressBar1.Value = 0;
 
-           // ReadExcelAndSaveIncome();
+            ReadExcelAndSaveIncome();
 
             CheckIfFileInTempIncome();
 
@@ -183,21 +185,15 @@ namespace YouTrade.Winform
             //   progressBar1.Step = 1; // progressbar.
 
 
-            progressBar1.Maximum = 1000;
-            progressBar1.Step = 1;
-            progressBar1.Value = 0;
-            for (int i = 0; i < 1000; i++)
-            {
-                progressBar1.Value++;
-                // Thread.Sleep(1);
-            }
+          
 
 
             foreach (string file in files)
             {
                // progressBar1.Value++; // progressbar
                 txtFileName.Text = "Moving... " + Path.GetFileName(file); // progressbar
-
+                progressBar1.Maximum = files.Count();
+                progressBar1.Step = 1;
 
                 try
                 {
@@ -236,12 +232,12 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                //progressBar1.Value++; // progressbar
+                progressBar1.Value++; // progressbar
 
 
             }
-            progressBar1.Value= progressBar1.Maximum;
-            Thread.Sleep(1000);
+          //  progressBar1.Value= progressBar1.Maximum;
+            //Thread.Sleep(1000);
         }
 
         //Ratios
