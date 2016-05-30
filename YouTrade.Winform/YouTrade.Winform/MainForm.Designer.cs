@@ -36,13 +36,13 @@
             this.btnRatios = new System.Windows.Forms.Button();
             this.btnIncome = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnNote = new System.Windows.Forms.Button();
             this.bntCashFlow = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.btnStock = new System.Windows.Forms.Button();
             this.btnInput = new System.Windows.Forms.Button();
             this.btnOutput = new System.Windows.Forms.Button();
-            this.btnNote = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.txtFileName = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -52,7 +52,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(41, 23);
+            this.label1.Location = new System.Drawing.Point(96, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 24);
             this.label1.TabIndex = 0;
@@ -62,7 +62,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(26, 85);
+            this.label2.Location = new System.Drawing.Point(81, 87);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 24);
             this.label2.TabIndex = 1;
@@ -71,7 +71,7 @@
             // tbInput
             // 
             this.tbInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbInput.Location = new System.Drawing.Point(121, 27);
+            this.tbInput.Location = new System.Drawing.Point(208, 26);
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(693, 22);
             this.tbInput.TabIndex = 2;
@@ -80,7 +80,7 @@
             // tbOutput
             // 
             this.tbOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbOutput.Location = new System.Drawing.Point(121, 90);
+            this.tbOutput.Location = new System.Drawing.Point(208, 88);
             this.tbOutput.Name = "tbOutput";
             this.tbOutput.Size = new System.Drawing.Size(693, 22);
             this.tbOutput.TabIndex = 3;
@@ -135,35 +135,22 @@
             this.groupBox1.ForeColor = System.Drawing.Color.Coral;
             this.groupBox1.Location = new System.Drawing.Point(30, 151);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1115, 107);
-            this.groupBox1.Size = new System.Drawing.Size(992, 101);
+            this.groupBox1.Size = new System.Drawing.Size(1067, 101);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Actions";
             // 
-            // bntCashFlow
+            // btnNote
             // 
-            this.bntCashFlow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bntCashFlow.ForeColor = System.Drawing.Color.Black;
-            this.bntCashFlow.Location = new System.Drawing.Point(811, 44);
-            this.bntCashFlow.Name = "bntCashFlow";
-            this.bntCashFlow.Size = new System.Drawing.Size(147, 33);
-            this.bntCashFlow.TabIndex = 10;
-            this.bntCashFlow.Text = "Cash Flow";
-            this.bntCashFlow.UseVisualStyleBackColor = true;
-            this.bntCashFlow.Click += new System.EventHandler(this.bntCashFlow_Click);
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(673, 44);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 33);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Info";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button7_Click);
+            this.btnNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNote.ForeColor = System.Drawing.Color.Black;
+            this.btnNote.Location = new System.Drawing.Point(974, 44);
+            this.btnNote.Name = "btnNote";
+            this.btnNote.Size = new System.Drawing.Size(86, 33);
+            this.btnNote.TabIndex = 10;
+            this.btnNote.Text = "Note";
+            this.btnNote.UseVisualStyleBackColor = true;
+            this.btnNote.Click += new System.EventHandler(this.btnNote_Click);
             // 
             // bntCashFlow
             // 
@@ -216,7 +203,7 @@
             // btnInput
             // 
             this.btnInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInput.Location = new System.Drawing.Point(820, 27);
+            this.btnInput.Location = new System.Drawing.Point(941, 27);
             this.btnInput.Name = "btnInput";
             this.btnInput.Size = new System.Drawing.Size(106, 23);
             this.btnInput.TabIndex = 9;
@@ -227,7 +214,7 @@
             // btnOutput
             // 
             this.btnOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOutput.Location = new System.Drawing.Point(820, 88);
+            this.btnOutput.Location = new System.Drawing.Point(941, 90);
             this.btnOutput.Name = "btnOutput";
             this.btnOutput.Size = new System.Drawing.Size(106, 23);
             this.btnOutput.TabIndex = 9;
@@ -235,40 +222,29 @@
             this.btnOutput.UseVisualStyleBackColor = true;
             this.btnOutput.Click += new System.EventHandler(this.Click_Output);
             // 
-            // btnNote
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(224, 268);
+            this.progressBar1.Location = new System.Drawing.Point(121, 268);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(273, 23);
+            this.progressBar1.Size = new System.Drawing.Size(901, 23);
             this.progressBar1.TabIndex = 10;
             // 
             // txtFileName
             // 
             this.txtFileName.AutoSize = true;
-            this.txtFileName.Location = new System.Drawing.Point(221, 309);
+            this.txtFileName.Location = new System.Drawing.Point(65, 278);
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(37, 13);
             this.txtFileName.TabIndex = 11;
             this.txtFileName.Text = "Status";
-            this.btnNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNote.ForeColor = System.Drawing.Color.Black;
-            this.btnNote.Location = new System.Drawing.Point(974, 44);
-            this.btnNote.Name = "btnNote";
-            this.btnNote.Size = new System.Drawing.Size(86, 33);
-            this.btnNote.TabIndex = 10;
-            this.btnNote.Text = "Note";
-            this.btnNote.UseVisualStyleBackColor = true;
-            this.btnNote.Click += new System.EventHandler(this.btnNote_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1055, 352);
+            this.ClientSize = new System.Drawing.Size(1109, 332);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.progressBar1);
-            this.ClientSize = new System.Drawing.Size(1109, 277);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.btnInput);
             this.Controls.Add(this.groupBox1);

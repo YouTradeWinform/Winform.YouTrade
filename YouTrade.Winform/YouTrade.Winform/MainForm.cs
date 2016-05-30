@@ -112,21 +112,27 @@ namespace YouTrade.Winform
         {
             btnRatios.Text = "Ratios Running...";
             MoveToTempRatios();
+            progressBar1.Value = 0;
             ReadExcelAndSaveRatios();
+            txtFileName.Text = "Done!";
             btnRatios.Text = "Ratios";
         }
         private void Click_Balance(object sender, EventArgs e)
         {
             btnBalance.Text = "Balance Running...";
             MoveToTempBalance();
+            progressBar1.Value = 0;
             ReadExcelAndSaveBalance();
+            txtFileName.Text = "Done!";
             btnBalance.Text = "Balance";
         }
         private void Click_Stock(object sender, EventArgs e)
         {
             btnStock.Text = "Stock Running...";
             MoveToTempStock();
+            txtFileName.Text = "Done!";
             ReadExcelAndSaveStock();
+            txtFileName.Text = "Done!";
             btnStock.Text = "Stock";
         }
         private void button3_Click(object sender, EventArgs e)
@@ -171,7 +177,6 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("income") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-
            // progressBar1 = new ProgressBar();
             //progressBar1.Value = 0; // progressbar
             progressBar1.Maximum = files.Count(); // progressbar
@@ -226,11 +231,7 @@ namespace YouTrade.Winform
             }
             progressBar1.Value= progressBar1.Maximum;
             Thread.Sleep(1000);
-
         }
-
-
-
 
         //Ratios
         public void MoveToTempRatios()
@@ -239,6 +240,8 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("ratios") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            progressBar1.Maximum = files.Count(); // progressbar
+            progressBar1.Step = 1; // progressbar
             foreach (string file in files)
             {
                 try
@@ -274,7 +277,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
+                progressBar1.Value++;
             }
+            progressBar1.Value = progressBar1.Maximum;
+            Thread.Sleep(1000);
         }
         //Balance
         public void MoveToTempBalance()
@@ -283,6 +289,8 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("balance") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            progressBar1.Maximum = files.Count(); // progressbar
+            progressBar1.Step = 1; // progressbar
             foreach (string file in files)
             {
                 try
@@ -318,7 +326,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
+                progressBar1.Value++;
             }
+            progressBar1.Value = progressBar1.Maximum;
+            Thread.Sleep(1000);
         }
         //Stock
         public void MoveToTempStock()
@@ -327,6 +338,8 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("StockMarketData") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
+            progressBar1.Maximum = files.Count(); // progressbar
+            progressBar1.Step = 1; // progressbar
             foreach (string file in files)
             {
                 try
@@ -362,7 +375,10 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
+                progressBar1.Value++;
             }
+            progressBar1.Value = progressBar1.Maximum;
+            Thread.Sleep(1000);
         }
         #endregion
         #region Move file to temp
@@ -457,10 +473,9 @@ namespace YouTrade.Winform
 
         #endregion
         #region Save to DB
-        private void SaveToDBRatio(System.Data.DataTable dt)
+        //Ratios
+        void SaveToDBRatio(System.Data.DataTable dt)
         {
-            List<string> listIDFeild = new List<string>();
-
             using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
             {
                 dbcon.Open();
@@ -471,7 +486,7 @@ namespace YouTrade.Winform
                     {
                         if (dt.Rows[i][1].ToString().Trim() == "")
                             break;
-                        string strQueryDetails = "INSERT INTO [dbo].[Ratio]([Ticker],[Year],[Quater],[ExploreName],[Value],[Unit]) VALUES(@ticker,@year,@quater,@explorename,@value,@unit)";
+                        string strQueryDetails = "INSERT INTO [dbo].[Ratio]([Ticker],[Year],[Quater],[Name],[Value],[Unit]) VALUES(@ticker,@year,@quater,@explorename,@value,@unit)";
                         SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
 
                         string pattern = dt.Rows[6][j].ToString();
@@ -485,8 +500,6 @@ namespace YouTrade.Winform
                         //Quater
                         int startPositionQuarter = pattern.IndexOf("Quarter") + "Quarter:".Length;
                         string quarter = pattern.Substring(startPositionQuarter, pattern.IndexOf("\nUnit") - startPositionQuarter);
-                        if (quarter == "Annual")
-                            quarter = "5";
                         //Unit
                         int startUnitPosition = pattern.IndexOf("Unit:") + "Unit:".Length;
                         string unit = pattern.Substring(startUnitPosition, pattern.Length - startUnitPosition);
@@ -496,10 +509,99 @@ namespace YouTrade.Winform
                         sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
-                        sqlcmdD.Parameters.AddWithValue("@quater", Convert.ToInt16(quarter));
+                        sqlcmdD.Parameters.AddWithValue("@quater", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
                         sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
                         sqlcmdD.ExecuteNonQuery();
+                    }
+                }
+                dbcon.Close();
+            }
+        }
+        //Stock
+        void SaveToDBStock(System.Data.DataTable dt)
+        {
+            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
+            {
+                dbcon.Open();
+                if (dt.Columns.Count > 12)
+                {
+                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                    {
+                        if (dt.Rows[i][0].ToString().Trim() == "")
+                            break;
+                        string strQueryDetails = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Opens],[OpenAdjusted],[Highest],[HighestAdjusted],[Lowest],[LowestAdjusted],[Closes],[CloseAdjusted],[TotaTradingVolumes]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @Highest, @HighestAdjusted, @Lowest, @LowestAdjusted, @Closes, @CloseAdjusted, @TotaTradingVolumes)";
+                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                        sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                        sqlcmdD.Parameters.AddWithValue("@Closes", dt.Rows[i][5]);
+                        sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", dt.Rows[i][6]);
+                        sqlcmdD.Parameters.AddWithValue("@Highest", dt.Rows[i][22]);
+                        sqlcmdD.Parameters.AddWithValue("@HighestAdjusted", dt.Rows[i][23]);
+                        sqlcmdD.Parameters.AddWithValue("@Lowest", dt.Rows[i][24]);
+                        sqlcmdD.Parameters.AddWithValue("@LowestAdjusted", dt.Rows[i][25]);
+                        sqlcmdD.Parameters.AddWithValue("@Opens", dt.Rows[i][26]);
+                        sqlcmdD.Parameters.AddWithValue("@OpenAdjusted", dt.Rows[i][27]);
+                        sqlcmdD.Parameters.AddWithValue("@TotaTradingVolumes", dt.Rows[i][40]);
+                        sqlcmdD.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                    {
+                        if (dt.Rows[i][0].ToString().Trim() == "")
+                            break;
+                        string strQueryDetails = "INSERT INTO [dbo].[StockMarketData]([Ticker] ,[Trading] ,[Closes],[CloseAdjusted]) VALUES(@ticker,@trading, @Closes, @CloseAdjusted)";
+                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                        sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                        sqlcmdD.Parameters.AddWithValue("@Closes", dt.Rows[i][3]);
+                        sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", dt.Rows[i][4]);
+                        sqlcmdD.ExecuteNonQuery();
+                    }
+                }
+                dbcon.Close();
+            }
+        }
+        // Save to balance
+        void SaveToDBBalance(System.Data.DataTable dt)
+        {
+            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
+            {
+                dbcon.Open();
+                for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                {
+                    for (int j = 4; j <= dt.Columns.Count - 1; j++)
+                    {
+                        if (dt.Rows[i][1].ToString().Trim() == "")
+                            break;
+                        string strQueryDetails = "INSERT INTO [dbo].[BalanceSheet]([Ticker],[Year],[Quater],[Name],[Value],[Unit]) VALUES(@ticker,@year,@quater,@explorename,@value,@unit)";
+                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+
+                        string pattern = dt.Rows[6][j].ToString();
+                        string[] st = pattern.Split(new string[] { "Year:", "Quarter:", "Unit:" }, StringSplitOptions.RemoveEmptyEntries);
+                        //Name
+                        string name = pattern.Substring(0, pattern.IndexOf("\nConsolidated"));
+                        //Year
+                        int startPositionYear = pattern.IndexOf("Year:") + "Year:".Length;
+                        string year = pattern.Substring(startPositionYear, pattern.IndexOf("\nQuarter") - startPositionYear);
+                        int years = int.Parse(year);
+                        //Quater
+                        int startPositionQuarter = pattern.IndexOf("Quarter") + "Quarter:".Length;
+                        string quarter = pattern.Substring(startPositionQuarter, pattern.IndexOf("\nUnit") - startPositionQuarter);
+                        //Unit
+                        int startUnitPosition = pattern.IndexOf("Unit:") + "Unit:".Length;
+                        string unit = pattern.Substring(startUnitPosition, pattern.Length - startUnitPosition);
+                        if (true == (unit.Contains("\n")))
+                            unit = unit.Substring(0, unit.Length);
+
+                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
+                        sqlcmdD.Parameters.AddWithValue("@quater", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
+                        sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
+                        sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
                     }
                 }
                 dbcon.Close();
@@ -928,13 +1030,14 @@ namespace YouTrade.Winform
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        string fullNameIn_In_Out = tbOutput.Text + "Ratios\\"+ fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
 
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                SaveToDBRatio(tbl);
                                 break;
                             }
 
@@ -962,13 +1065,14 @@ namespace YouTrade.Winform
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        string fullNameIn_In_Out = tbOutput.Text + "Balance\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
 
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                SaveToDBBalance(tbl);
                                 break;
                             }
 
@@ -996,13 +1100,14 @@ namespace YouTrade.Winform
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
 
-                        string fullNameIn_In_Out = tbOutput.Text + fileName.Replace(".", string.Empty) + ".xls";
+                        string fullNameIn_In_Out = tbOutput.Text + "Stock\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
 
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                SaveToDBStock(tbl);
                                 break;
                             }
 
