@@ -44,7 +44,7 @@
             this.btnInput = new System.Windows.Forms.Button();
             this.btnOutput = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.txtFileName = new System.Windows.Forms.Label();
+            this.txtStatus = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,7 +105,7 @@
             this.btnRatios.Name = "btnRatios";
             this.btnRatios.Size = new System.Drawing.Size(107, 33);
             this.btnRatios.TabIndex = 5;
-            this.btnRatios.Text = "Ratios";
+            this.btnRatios.Text = "Ratio";
             this.btnRatios.UseVisualStyleBackColor = true;
             this.btnRatios.Click += new System.EventHandler(this.Click_Ratios);
             // 
@@ -224,26 +224,27 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(121, 268);
+            this.progressBar1.Location = new System.Drawing.Point(208, 273);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(376, 23);
+            this.progressBar1.Size = new System.Drawing.Size(839, 23);
             this.progressBar1.TabIndex = 10;
             // 
-            // txtFileName
+            // txtStatus
             // 
-            this.txtFileName.AutoSize = true;
-            this.txtFileName.Location = new System.Drawing.Point(118, 316);
-            this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(37, 13);
-            this.txtFileName.TabIndex = 11;
-            this.txtFileName.Text = "Status";
+            this.txtStatus.AutoSize = true;
+            this.txtStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.txtStatus.Location = new System.Drawing.Point(53, 276);
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.Size = new System.Drawing.Size(62, 20);
+            this.txtStatus.TabIndex = 11;
+            this.txtStatus.Text = "Status";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1109, 358);
-            this.Controls.Add(this.txtFileName);
+            this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.btnInput);
@@ -278,7 +279,7 @@
         private System.Windows.Forms.Button bntCashFlow;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label txtFileName;
+        private System.Windows.Forms.Label txtStatus;
         private System.Windows.Forms.Button btnNote;
     }
 }

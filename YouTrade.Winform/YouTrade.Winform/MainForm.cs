@@ -27,6 +27,7 @@ namespace YouTrade.Winform
         string pathTempCashFlow = "", pathTempNote = "";
         DataSet dsSource = null;
         DataSet dsSource1 = null;
+        public int demFileRatios =0,demFileBalance=0,demFileStock=0;
         int demIncome = 0, demBasicInfo = 0;
         bool KTIncome = false;
 
@@ -111,28 +112,49 @@ namespace YouTrade.Winform
         private void Click_Ratios(object sender, EventArgs e)
         {
             btnRatios.Text = "Ratios Running...";
+            btnRatios.BackColor = Color.Blue;
             MoveToTempRatios();
-            txtFileName.Text = "Done!";
-            progressBar1.Value = 0;
-            ReadExcelAndSaveRatios();
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 1;
+            progressBar1.Step = 10;
+            for (int i = 0; i < demFileRatios; i++)
+            {
+                ReadExcelAndSaveRatios();
+            }
+            txtStatus.Text = "Done!";
             btnRatios.Text = "Ratios";
         }
         private void Click_Balance(object sender, EventArgs e)
         {
             btnBalance.Text = "Balance Running...";
+            btnRatios.BackColor = Color.Blue;
             MoveToTempBalance();
-            txtFileName.Text = "Done!";
-            progressBar1.Value = 0;
-            ReadExcelAndSaveBalance();
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 1;
+            progressBar1.Step = 10;
+            for (int i = 0; i < demFileBalance; i++)
+            {
+                ReadExcelAndSaveBalance();
+            }
+            txtStatus.Text = "Done!";
             btnBalance.Text = "Balance";
         }
         private void Click_Stock(object sender, EventArgs e)
         {
             btnStock.Text = "Stock Running...";
+            btnRatios.BackColor = Color.Blue;
             MoveToTempStock();
-            txtFileName.Text = "Done!";
-            ReadExcelAndSaveStock();
-            txtFileName.Text = "Done!";
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 1;
+            progressBar1.Step = 10;
+            for (int i = 0; i < demFileStock; i++)
+            {
+                ReadExcelAndSaveStock();
+            }
+            txtStatus.Text = "Done!";
             btnStock.Text = "Stock";
         }
         private void button3_Click(object sender, EventArgs e)
@@ -142,7 +164,7 @@ namespace YouTrade.Winform
           
 
             MoveToTempIncome();
-            txtFileName.Text = "Done!";
+            txtStatus.Text = "Done!";
             progressBar1.Value = 0;
 
             ReadExcelAndSaveIncome();
@@ -191,7 +213,7 @@ namespace YouTrade.Winform
             foreach (string file in files)
             {
                // progressBar1.Value++; // progressbar
-                txtFileName.Text = "Moving... " + Path.GetFileName(file); // progressbar
+                txtStatus.Text = "Moving... " + Path.GetFileName(file); // progressbar
                 progressBar1.Maximum = files.Count();
                 progressBar1.Step = 1;
 
@@ -247,15 +269,6 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("ratio") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            //progressBar1.Maximum = 1000;
-            //progressBar1.Step = 1;
-            //progressBar1.Value = 0;
-            //for (int i = 0; i < 1000; i++)
-            //{
-            //    progressBar1.Value++;
-            //    // Thread.Sleep(1);
-            //}
-
             foreach (string file in files)
             {
                 try
@@ -271,8 +284,9 @@ namespace YouTrade.Winform
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
                         string fileNameOut = pathTempRatios + fileName.Replace(".", string.Empty);
-                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);                      
                     }
+                    demFileRatios = demFileRatios + 1;
                 }
                 catch (Exception ex)
                 {
@@ -291,10 +305,7 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-              //  progressBar1.Value++;
             }
-         //   progressBar1.Value = progressBar1.Maximum;
-           // Thread.Sleep(1000);
         }
         //Balance
         public void MoveToTempBalance()
@@ -303,15 +314,6 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("balance") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            //progressBar1.Maximum = 1000;
-            //progressBar1.Step = 1;
-            //progressBar1.Value = 0;
-            //for (int i = 0; i < 1000; i++)
-            //{
-            //    progressBar1.Value++;
-            //    // Thread.Sleep(1);
-            //}
-
             foreach (string file in files)
             {
                 try
@@ -329,6 +331,7 @@ namespace YouTrade.Winform
                         string fileNameOut = pathTempBalance + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
+                    demFileBalance = demFileBalance + 1;
                 }
                 catch (Exception ex)
                 {
@@ -347,10 +350,7 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                //progressBar1.Value++;
             }
-           // progressBar1.Value = progressBar1.Maximum;
-            //Thread.Sleep(1000);
         }
         //Stock
         public void MoveToTempStock()
@@ -359,15 +359,6 @@ namespace YouTrade.Winform
             var files = Directory.GetFiles(tbInput.Text, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".xls") || s.EndsWith(".xlsm") || s.EndsWith(".xlsx")).Where(f => f.Contains("StockMarketData") && !f.Contains("~$"));
             Microsoft.Office.Interop.Excel.Application excelApp = null;
             Microsoft.Office.Interop.Excel.Workbook excelWorkbook = null;
-            //progressBar1.Maximum = 1000;
-            //progressBar1.Step = 1;
-            //progressBar1.Value = 0;
-            //for (int i = 0; i < 1000; i++)
-            //{
-            //    progressBar1.Value++;
-            //    // Thread.Sleep(1);
-            //}
-
             foreach (string file in files)
             {
                 try
@@ -385,6 +376,7 @@ namespace YouTrade.Winform
                         string fileNameOut = pathTempStock + fileName.Replace(".", string.Empty);
                         excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
+                    demFileStock = demFileStock + 1;
                 }
                 catch (Exception ex)
                 {
@@ -403,10 +395,7 @@ namespace YouTrade.Winform
                         excelApp = null;
                     }
                 }
-                //progressBar1.Value++;
             }
-            //progressBar1.Value = progressBar1.Maximum;
-            //Thread.Sleep(1000);
         }
         #endregion
         #region Move file to temp
@@ -1065,6 +1054,7 @@ namespace YouTrade.Winform
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
+                                txtStatus.Text = fileName;
                                 SaveToDBRatio(tbl);
                                 break;
                             }
@@ -1096,7 +1086,7 @@ namespace YouTrade.Winform
                         string fullNameIn_In_Out = tbOutput.Text + "Balance\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
-
+                            txtStatus.Text = fileName;
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
@@ -1131,7 +1121,7 @@ namespace YouTrade.Winform
                         string fullNameIn_In_Out = tbOutput.Text + "Stock\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
-
+                            txtStatus.Text = fileName;
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
