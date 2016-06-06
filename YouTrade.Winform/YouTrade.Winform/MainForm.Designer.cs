@@ -89,9 +89,9 @@
             // 
             this.btnBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBalance.ForeColor = System.Drawing.Color.Black;
-            this.btnBalance.Location = new System.Drawing.Point(344, 44);
+            this.btnBalance.Location = new System.Drawing.Point(339, 44);
             this.btnBalance.Name = "btnBalance";
-            this.btnBalance.Size = new System.Drawing.Size(123, 33);
+            this.btnBalance.Size = new System.Drawing.Size(127, 33);
             this.btnBalance.TabIndex = 4;
             this.btnBalance.Text = "Balance";
             this.btnBalance.UseVisualStyleBackColor = true;
@@ -224,20 +224,22 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(208, 273);
+            this.progressBar1.Location = new System.Drawing.Point(36, 276);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(839, 23);
+            this.progressBar1.Size = new System.Drawing.Size(678, 23);
             this.progressBar1.TabIndex = 10;
             // 
             // txtStatus
             // 
             this.txtStatus.AutoSize = true;
-            this.txtStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.txtStatus.Location = new System.Drawing.Point(53, 276);
+            this.txtStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStatus.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.txtStatus.Location = new System.Drawing.Point(750, 283);
             this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(62, 20);
-            this.txtStatus.TabIndex = 11;
+            this.txtStatus.Size = new System.Drawing.Size(51, 16);
+            this.txtStatus.TabIndex = 12;
             this.txtStatus.Text = "Status";
+            this.txtStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -279,7 +281,7 @@
         private System.Windows.Forms.Button bntCashFlow;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label txtStatus;
         private System.Windows.Forms.Button btnNote;
+        private System.Windows.Forms.Label txtStatus;
     }
 }

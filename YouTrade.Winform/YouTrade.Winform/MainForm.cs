@@ -20,14 +20,14 @@ namespace YouTrade.Winform
     public partial class MainForm : Form
     {
         string sqlConnectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-       
+
         string pathIn = "", pathOut = "";
         string pathTempIncome = "", pathTempBasicInfo = "";
         string pathTempRatios = "", pathTempBalance = "", pathTempStock = "";
         string pathTempCashFlow = "", pathTempNote = "";
         DataSet dsSource = null;
         DataSet dsSource1 = null;
-        public int demFileRatios =0,demFileBalance=0,demFileStock=0;
+        public int demFileRatios = 0, demFileBalance = 0, demFileStock = 0;
         int demIncome = 0, demBasicInfo = 0;
         bool KTIncome = false;
 
@@ -95,7 +95,7 @@ namespace YouTrade.Winform
             }
             //Path Temp CashFlow
             pathTempCashFlow = System.Windows.Forms.Application.StartupPath + "\\Output\\CashFlow\\Temp\\";
-            if(!Directory.Exists(pathTempCashFlow))
+            if (!Directory.Exists(pathTempCashFlow))
             {
                 Directory.CreateDirectory(pathTempCashFlow);
             }
@@ -111,49 +111,45 @@ namespace YouTrade.Winform
         #region 7 click
         private void Click_Ratios(object sender, EventArgs e)
         {
-            btnRatios.Text = "Ratios Running...";
-            btnRatios.BackColor = Color.Blue;
+            btnRatios.Text = "Running...";
+            btnRatios.BackColor = Color.Gray;
+            txtStatus.Text = "Loading...";
             MoveToTempRatios();
-            progressBar1.Minimum = 0;
-            progressBar1.Maximum = 100;
-            progressBar1.Value = 1;
-            progressBar1.Step = 10;
-            for (int i = 0; i < demFileRatios; i++)
-            {
-                ReadExcelAndSaveRatios();
-            }
+            //progressBar1.Minimum = 0;
+            //progressBar1.Maximum = demFileRatios;
+            //progressBar1.Value = 1;
+            //progressBar1.Step = 10;
+            ReadExcelAndSaveRatios();
             txtStatus.Text = "Done!";
             btnRatios.Text = "Ratios";
+            btnRatios.BackColor = Color.White;
         }
         private void Click_Balance(object sender, EventArgs e)
         {
-            btnBalance.Text = "Balance Running...";
-            btnRatios.BackColor = Color.Blue;
+            btnBalance.Text = "Running...";
+            btnBalance.BackColor = Color.Gray;
+            txtStatus.Text = "Loading...";
             MoveToTempBalance();
-            progressBar1.Minimum = 0;
-            progressBar1.Maximum = 100;
-            progressBar1.Value = 1;
-            progressBar1.Step = 10;
-            for (int i = 0; i < demFileBalance; i++)
-            {
-                ReadExcelAndSaveBalance();
-            }
+            //progressBar1.Minimum = 0;
+            //progressBar1.Maximum = demFileBalance;
+            //progressBar1.Value = 1;
+            //progressBar1.Step = 10;
+            ReadExcelAndSaveBalance();
             txtStatus.Text = "Done!";
             btnBalance.Text = "Balance";
+            btnRatios.BackColor = Color.White;
         }
         private void Click_Stock(object sender, EventArgs e)
         {
-            btnStock.Text = "Stock Running...";
-            btnRatios.BackColor = Color.Blue;
+            btnStock.Text = "Running...";
+            btnStock.BackColor = Color.Gray;
+            txtStatus.Text = "Loading...";
             MoveToTempStock();
-            progressBar1.Minimum = 0;
-            progressBar1.Maximum = 100;
-            progressBar1.Value = 1;
-            progressBar1.Step = 10;
-            for (int i = 0; i < demFileStock; i++)
-            {
-                ReadExcelAndSaveStock();
-            }
+            //progressBar1.Minimum = 0;
+            //progressBar1.Maximum = demFileStock;
+            //progressBar1.Value = 1;
+            //progressBar1.Step = 10;
+            ReadExcelAndSaveStock();
             txtStatus.Text = "Done!";
             btnStock.Text = "Stock";
         }
@@ -161,7 +157,7 @@ namespace YouTrade.Winform
         {
             btnIncome.Text = "Income Running...";
 
-          
+
 
             MoveToTempIncome();
             txtStatus.Text = "Done!";
@@ -176,7 +172,7 @@ namespace YouTrade.Winform
         void CheckIfFileInTempIncome()
         {
 
-            
+
         }
         #endregion
 
@@ -207,12 +203,12 @@ namespace YouTrade.Winform
             //   progressBar1.Step = 1; // progressbar.
 
 
-          
+
 
 
             foreach (string file in files)
             {
-               // progressBar1.Value++; // progressbar
+                // progressBar1.Value++; // progressbar
                 txtStatus.Text = "Moving... " + Path.GetFileName(file); // progressbar
                 progressBar1.Maximum = files.Count();
                 progressBar1.Step = 1;
@@ -258,7 +254,7 @@ namespace YouTrade.Winform
 
 
             }
-          //  progressBar1.Value= progressBar1.Maximum;
+            //  progressBar1.Value= progressBar1.Maximum;
             //Thread.Sleep(1000);
         }
 
@@ -284,7 +280,7 @@ namespace YouTrade.Winform
                         excelWorkbook = excelApp.Workbooks.Open(FullNameIn, 1, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, null, false);
                         excelApp.DisplayAlerts = false;
                         string fileNameOut = pathTempRatios + fileName.Replace(".", string.Empty);
-                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);                      
+                        excelWorkbook.SaveAs(fileNameOut, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                     }
                     demFileRatios = demFileRatios + 1;
                 }
@@ -517,65 +513,35 @@ namespace YouTrade.Winform
                         //Quater
                         int startPositionQuarter = pattern.IndexOf("Quarter") + "Quarter:".Length;
                         string quarter = pattern.Substring(startPositionQuarter, pattern.IndexOf("\nUnit") - startPositionQuarter);
+                        if (quarter == " Annual")
+                            quarter = "5";
                         //Unit
                         int startUnitPosition = pattern.IndexOf("Unit:") + "Unit:".Length;
                         string unit = pattern.Substring(startUnitPosition, pattern.Length - startUnitPosition);
                         if (true == (unit.Contains("\n")))
                             unit = unit.Substring(0, unit.Length);
-
-                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
-                        sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
-                        sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
-                        sqlcmdD.Parameters.AddWithValue("@quater", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
-                        sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
-                        sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
-                        sqlcmdD.ExecuteNonQuery();
-                    }
-                }
-                dbcon.Close();
-            }
-        }
-        //Stock
-        void SaveToDBStock(System.Data.DataTable dt)
-        {
-            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
-            {
-                dbcon.Open();
-                if (dt.Columns.Count > 12)
-                {
-                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
-                    {
-                        if (dt.Rows[i][0].ToString().Trim() == "")
-                            break;
-                        string strQueryDetails = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Opens],[OpenAdjusted],[Highest],[HighestAdjusted],[Lowest],[LowestAdjusted],[Closes],[CloseAdjusted],[TotaTradingVolumes]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @Highest, @HighestAdjusted, @Lowest, @LowestAdjusted, @Closes, @CloseAdjusted, @TotaTradingVolumes)";
-                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
-                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
-                        sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
-                        sqlcmdD.Parameters.AddWithValue("@Closes", dt.Rows[i][5]);
-                        sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", dt.Rows[i][6]);
-                        sqlcmdD.Parameters.AddWithValue("@Highest", dt.Rows[i][22]);
-                        sqlcmdD.Parameters.AddWithValue("@HighestAdjusted", dt.Rows[i][23]);
-                        sqlcmdD.Parameters.AddWithValue("@Lowest", dt.Rows[i][24]);
-                        sqlcmdD.Parameters.AddWithValue("@LowestAdjusted", dt.Rows[i][25]);
-                        sqlcmdD.Parameters.AddWithValue("@Opens", dt.Rows[i][26]);
-                        sqlcmdD.Parameters.AddWithValue("@OpenAdjusted", dt.Rows[i][27]);
-                        sqlcmdD.Parameters.AddWithValue("@TotaTradingVolumes", dt.Rows[i][40]);
-                        sqlcmdD.ExecuteNonQuery();
-                    }
-                }
-                else
-                {
-                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
-                    {
-                        if (dt.Rows[i][0].ToString().Trim() == "")
-                            break;
-                        string strQueryDetails = "INSERT INTO [dbo].[StockMarketData]([Ticker] ,[Trading] ,[Closes],[CloseAdjusted]) VALUES(@ticker,@trading, @Closes, @CloseAdjusted)";
-                        SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
-                        sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
-                        sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
-                        sqlcmdD.Parameters.AddWithValue("@Closes", dt.Rows[i][3]);
-                        sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", dt.Rows[i][4]);
-                        sqlcmdD.ExecuteNonQuery();
+                        string value = dt.Rows[i][j].ToString().Trim();
+                        if(value=="")
+                        {
+                            string strQueryDetails1 = "INSERT INTO [dbo].[Ratio]([Ticker],[Year],[Quater],[Name],[Unit]) VALUES(@ticker,@year,@quater,@explorename,@unit)";
+                            SqlCommand sqlcmdD1 = new SqlCommand(strQueryDetails1, dbcon);
+                            sqlcmdD1.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                            sqlcmdD1.Parameters.AddWithValue("@explorename", name.ToString().Trim());
+                            sqlcmdD1.Parameters.AddWithValue("@year", Convert.ToInt16(years));
+                            sqlcmdD1.Parameters.AddWithValue("@quater", Convert.ToInt16(quarter));
+                            sqlcmdD1.Parameters.AddWithValue("@unit", unit.ToString().Trim());
+                            sqlcmdD1.ExecuteNonQuery();
+                        }
+                        else
+                        { 
+                            sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
+                            sqlcmdD.Parameters.AddWithValue("@quater", Convert.ToInt16(quarter));
+                            sqlcmdD.Parameters.AddWithValue("@value", double.Parse(value));
+                            sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
+                            sqlcmdD.ExecuteNonQuery();
+                        }
                     }
                 }
                 dbcon.Close();
@@ -607,6 +573,8 @@ namespace YouTrade.Winform
                         //Quater
                         int startPositionQuarter = pattern.IndexOf("Quarter") + "Quarter:".Length;
                         string quarter = pattern.Substring(startPositionQuarter, pattern.IndexOf("\nUnit") - startPositionQuarter);
+                        if (quarter == " Annual")
+                            quarter = "5";
                         //Unit
                         int startUnitPosition = pattern.IndexOf("Unit:") + "Unit:".Length;
                         string unit = pattern.Substring(startUnitPosition, pattern.Length - startUnitPosition);
@@ -616,9 +584,235 @@ namespace YouTrade.Winform
                         sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][1].ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@explorename", name.ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(years));
-                        sqlcmdD.Parameters.AddWithValue("@quater", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
+                        sqlcmdD.Parameters.AddWithValue("@quater", Convert.ToInt16(quarter));
                         sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
                         sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
+                        sqlcmdD.ExecuteNonQuery();
+                    }
+                }
+                dbcon.Close();
+            }
+        }
+        //Stock
+        void SaveToDBStock(System.Data.DataTable dt)
+        {
+            using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
+            {
+                dbcon.Open();
+                if (dt.Columns.Count > 12)
+                {
+                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                    {
+                        if (dt.Rows[i][0].ToString().Trim() == "")
+                            break;
+                        string close = dt.Rows[i][5].ToString().Trim();
+                        string closeadj = dt.Rows[i][6].ToString().Trim();
+                        string highet = dt.Rows[i][22].ToString().Trim();
+                        string highetsadj = dt.Rows[i][23].ToString().Trim();
+                        string lowest = dt.Rows[i][24].ToString().Trim();
+                        string lowestadj = dt.Rows[i][25].ToString().Trim();
+                        string open = dt.Rows[i][26].ToString().Trim();
+                        string openadj = dt.Rows[i][27].ToString().Trim();
+                        string volume = dt.Rows[i][40].ToString().Trim();
+                        if (close == "")
+                        {
+                            if (closeadj == "")
+                            {
+                                if (highet == "")
+                                {
+                                    if (highetsadj == "")
+                                    {
+                                        if (lowest == "")
+                                        {
+                                            if (lowestadj == "")
+                                            {
+                                                if (open == "")
+                                                {
+                                                    if (openadj == "")
+                                                    {
+                                                        if (volume == "")
+                                                        {
+                                                            // Ticker, Date
+                                                            string strQueryDetails0 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ) VALUES(@ticker,@trading)";
+                                                            SqlCommand sqlcmdD0 = new SqlCommand(strQueryDetails0, dbcon);
+                                                            sqlcmdD0.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                                            sqlcmdD0.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                                            sqlcmdD0.ExecuteNonQuery();
+                                                        }
+                                                        else
+                                                        {
+                                                            //Tiker, Date, Volume
+                                                            string strQueryDetails1 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Volume]) VALUES(@ticker,@trading, @TotaTradingVolumes)";
+                                                            SqlCommand sqlcmdD1 = new SqlCommand(strQueryDetails1, dbcon);
+                                                            sqlcmdD1.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                                            sqlcmdD1.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                                            sqlcmdD1.Parameters.AddWithValue("@TotaTradingVolumes",double.Parse(volume));
+                                                            sqlcmdD1.ExecuteNonQuery();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Tiker, Date, Volume, OpenAdj
+                                                        string strQueryDetails2 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[OpenAdjusted],[Volume]) VALUES(@ticker,@trading, @OpenAdjusted, @TotaTradingVolumes)";
+                                                        SqlCommand sqlcmdD2 = new SqlCommand(strQueryDetails2, dbcon);
+                                                        sqlcmdD2.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                                        sqlcmdD2.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                                        sqlcmdD2.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                                        sqlcmdD2.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                                        sqlcmdD2.ExecuteNonQuery();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //Tiker, Date, Volume, OpenAdj, Open
+                                                    string strQueryDetails3 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date],[Open],[OpenAdjusted],[Volume]) VALUES(@ticker,@trading,@Opens, @OpenAdjusted, @TotaTradingVolumes)";
+                                                    SqlCommand sqlcmdD3 = new SqlCommand(strQueryDetails3, dbcon);
+                                                    sqlcmdD3.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                                    sqlcmdD3.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                                    sqlcmdD3.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                                    sqlcmdD3.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                                    sqlcmdD3.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                                    sqlcmdD3.ExecuteNonQuery();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //Tiker, Date, Volume, OpenAdj, Open, LowestAdj
+                                                string strQueryDetails4 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[LowestAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @LowestAdjusted, @TotaTradingVolumes)";
+                                                SqlCommand sqlcmdD4 = new SqlCommand(strQueryDetails4, dbcon);
+                                                sqlcmdD4.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                                sqlcmdD4.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                                sqlcmdD4.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                                                sqlcmdD4.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                                sqlcmdD4.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                                sqlcmdD4.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                                sqlcmdD4.ExecuteNonQuery();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //Tiker, Date, Volume, OpenAdj, Open, LowestAdj, Lowest
+                                            string strQueryDetails5 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[Lowest],[LowestAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted,  @Lowest, @LowestAdjusted, @TotaTradingVolumes)";
+                                            SqlCommand sqlcmdD5 = new SqlCommand(strQueryDetails5, dbcon);
+                                            sqlcmdD5.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                            sqlcmdD5.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                            sqlcmdD5.Parameters.AddWithValue("@Lowest", double.Parse(lowest));
+                                            sqlcmdD5.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                                            sqlcmdD5.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                            sqlcmdD5.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                            sqlcmdD5.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                            sqlcmdD5.ExecuteNonQuery();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //Tiker, Date, Volume, OpenAdj, Open, LowestAdj, Lowest, HighestAdj
+                                        string strQueryDetails6 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[HighestAdjusted],[Lowest],[LowestAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @HighestAdjusted, @Lowest, @LowestAdjusted,@TotaTradingVolumes)";
+                                        SqlCommand sqlcmdD6 = new SqlCommand(strQueryDetails6, dbcon);
+                                        sqlcmdD6.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                        sqlcmdD6.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                        sqlcmdD6.Parameters.AddWithValue("@HighestAdjusted", double.Parse(highetsadj));
+                                        sqlcmdD6.Parameters.AddWithValue("@Lowest", double.Parse(lowest));
+                                        sqlcmdD6.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                                        sqlcmdD6.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                        sqlcmdD6.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                        sqlcmdD6.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                        sqlcmdD6.ExecuteNonQuery();
+                                    }
+                                }
+                                else
+                                {
+                                    //Tiker, Date, Volume, OpenAdj, Open, LowestAdj, Lowest, HighestAdj, Highest
+                                    string strQueryDetails7 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[Highest],[HighestAdjusted],[Lowest],[LowestAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @Highest, @HighestAdjusted, @Lowest, @LowestAdjusted, @TotaTradingVolumes)";
+                                    SqlCommand sqlcmdD7 = new SqlCommand(strQueryDetails7, dbcon);
+                                    sqlcmdD7.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                    sqlcmdD7.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                    sqlcmdD7.Parameters.AddWithValue("@Highest", double.Parse(highet));
+                                    sqlcmdD7.Parameters.AddWithValue("@HighestAdjusted", double.Parse(highetsadj));
+                                    sqlcmdD7.Parameters.AddWithValue("@Lowest", double.Parse(lowest));
+                                    sqlcmdD7.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                                    sqlcmdD7.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                    sqlcmdD7.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                    sqlcmdD7.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                    sqlcmdD7.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                //Tiker, Date, Volume, OpenAdj, Open, LowestAdj, Lowest, HighestAdj, Highest, CloseAdj
+                                string strQueryDetails8 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[Highest],[HighestAdjusted],[Lowest],[LowestAdjusted],[CloseAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @Highest, @HighestAdjusted, @Lowest, @LowestAdjusted, @CloseAdjusted, @TotaTradingVolumes)";
+                                SqlCommand sqlcmdD8 = new SqlCommand(strQueryDetails8, dbcon);
+                                sqlcmdD8.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                                sqlcmdD8.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                                sqlcmdD8.Parameters.AddWithValue("@CloseAdjusted", double.Parse(closeadj));
+                                sqlcmdD8.Parameters.AddWithValue("@Highest", double.Parse(highet));
+                                sqlcmdD8.Parameters.AddWithValue("@HighestAdjusted", double.Parse(highetsadj));
+                                sqlcmdD8.Parameters.AddWithValue("@Lowest", double.Parse(lowest));
+                                sqlcmdD8.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                                sqlcmdD8.Parameters.AddWithValue("@Opens", double.Parse(open));
+                                sqlcmdD8.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                                sqlcmdD8.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                                sqlcmdD8.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            //Tiker, Date, Volume, OpenAdj, Open, LowestAdj, Lowest, HighestAdj, Highest, CloseAdj, Close
+                            string strQueryDetails = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Open],[OpenAdjusted],[Highest],[HighestAdjusted],[Lowest],[LowestAdjusted],[Close],[CloseAdjusted],[Volume]) VALUES(@ticker,@trading, @Opens, @OpenAdjusted, @Highest, @HighestAdjusted, @Lowest, @LowestAdjusted, @Closes, @CloseAdjusted, @TotaTradingVolumes)";
+                            SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+                            sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0]);
+                            sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2]);
+                            sqlcmdD.Parameters.AddWithValue("@Closes", double.Parse(close));
+                            sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", double.Parse(closeadj));
+                            sqlcmdD.Parameters.AddWithValue("@Highest", double.Parse(highet));
+                            sqlcmdD.Parameters.AddWithValue("@HighestAdjusted", double.Parse(highetsadj));
+                            sqlcmdD.Parameters.AddWithValue("@Lowest", double.Parse(lowest));
+                            sqlcmdD.Parameters.AddWithValue("@LowestAdjusted", double.Parse(lowestadj));
+                            sqlcmdD.Parameters.AddWithValue("@Opens", double.Parse(open));
+                            sqlcmdD.Parameters.AddWithValue("@OpenAdjusted", double.Parse(openadj));
+                            sqlcmdD.Parameters.AddWithValue("@TotaTradingVolumes", double.Parse(volume));
+                            sqlcmdD.ExecuteNonQuery();
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 8; i <= dt.Rows.Count - 1; i++)
+                    {
+                        if (dt.Rows[i][0].ToString().Trim() == "")
+                            break;
+                        string closeadj = dt.Rows[i][4].ToString().Trim();
+                        string close = dt.Rows[i][3].ToString().Trim();
+                        if (closeadj == "")
+                        {
+                            if(close == "")
+                            {
+                                string strQueryDetailsNotClose1 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ) VALUES(@ticker,@trading)";
+                                SqlCommand sqlcmdDNotClose1 = new SqlCommand(strQueryDetailsNotClose1, dbcon);
+                                sqlcmdDNotClose1.Parameters.AddWithValue("@ticker", dt.Rows[i][0].ToString().Trim());
+                                sqlcmdDNotClose1.Parameters.AddWithValue("@trading", dt.Rows[i][2].ToString().Trim());
+                                sqlcmdDNotClose1.ExecuteNonQuery();
+                            }
+                            else
+                            { 
+                                string strQueryDetailsNotClose2 = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Close]) VALUES(@ticker,@trading, @Closes)";
+                                SqlCommand sqlcmdDNotClose2 = new SqlCommand(strQueryDetailsNotClose2, dbcon);
+                                sqlcmdDNotClose2.Parameters.AddWithValue("@ticker", dt.Rows[i][0].ToString().Trim());
+                                sqlcmdDNotClose2.Parameters.AddWithValue("@trading", dt.Rows[i][2].ToString().Trim());
+                                sqlcmdDNotClose2.Parameters.AddWithValue("@Closes", double.Parse(close));
+                                sqlcmdDNotClose2.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            string strQueryDetails = "INSERT INTO [dbo].[MarketData]([Ticker] ,[Date] ,[Close],[CloseAdjusted]) VALUES(@ticker,@trading, @Closes, @CloseAdjusted)";
+                            SqlCommand sqlcmdD = new SqlCommand(strQueryDetails, dbcon);
+                            sqlcmdD.Parameters.AddWithValue("@ticker", dt.Rows[i][0].ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@trading", dt.Rows[i][2].ToString().Trim());
+                            sqlcmdD.Parameters.AddWithValue("@Closes", double.Parse(close));
+                            sqlcmdD.Parameters.AddWithValue("@CloseAdjusted", double.Parse(closeadj));
+                            sqlcmdD.ExecuteNonQuery();
+                        }
                     }
                 }
                 dbcon.Close();
@@ -631,7 +825,7 @@ namespace YouTrade.Winform
             //arr[1] = "Quarter:";
             //arr[2] = "Unit:";
             //string[] arrOut;
-           // List<string> listIDFeild = new List<string>();
+            // List<string> listIDFeild = new List<string>();
             int dong = 0, cot = 0;
             using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
             {
@@ -696,7 +890,7 @@ namespace YouTrade.Winform
 
 
 
-               // demIncome += dong * cot;
+                // demIncome += dong * cot;
                 for (int i = 8; i <= dt.Rows.Count - 1; i++)
                 {
                     try
@@ -706,7 +900,7 @@ namespace YouTrade.Winform
                         for (int j = 4; j <= dt.Columns.Count - 1; j++)
                         {
 
-                          //  string strQueryDetails = "INSERT INTO [dbo].[Income_Details_Feild]([Ticker] ,[IDFeild] ,[Year],[IDQuarter],[Value]) VALUES(@ticker,@explore,@year,@quarter,@value)";
+                            //  string strQueryDetails = "INSERT INTO [dbo].[Income_Details_Feild]([Ticker] ,[IDFeild] ,[Year],[IDQuarter],[Value]) VALUES(@ticker,@explore,@year,@quarter,@value)";
                             string strq = "INSERT INTO [dbo].[Income] ([Ticker],[Year] ,[Quater]  ,[Name] ,[Value] ,[Unit]) VALUES(@ticker,@year,@quarter,@feildname,@value,@unit)";
                             SqlCommand sqlcmdD = new SqlCommand(strq, dbcon);
 
@@ -738,7 +932,7 @@ namespace YouTrade.Winform
 
                             sqlcmdD.Parameters.AddWithValue("@feildname", name.ToString().Trim());
                             sqlcmdD.Parameters.AddWithValue("@year", Convert.ToInt16(year));
-                            sqlcmdD.Parameters.AddWithValue("@quarter", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5 );
+                            sqlcmdD.Parameters.AddWithValue("@quarter", quarter.ToString().Trim() != "Annual" ? Convert.ToInt16(quarter.ToString().Trim()) : 5);
                             sqlcmdD.Parameters.AddWithValue("@value", dt.Rows[i][j].ToString().Trim());
                             sqlcmdD.Parameters.AddWithValue("@unit", unit.ToString().Trim());
                             sqlcmdD.ExecuteNonQuery();
@@ -757,10 +951,10 @@ namespace YouTrade.Winform
         }
         //Save to DB CashFlow
         private void SaveToDBCashFlow(System.Data.DataTable dt)
-        {                        
+        {
             using (SqlConnection dbcon = new SqlConnection(sqlConnectionString))
             {
-                dbcon.Open();               
+                dbcon.Open();
                 for (int i = 8; i <= dt.Rows.Count - 1; i++)
                 {
                     try
@@ -768,7 +962,7 @@ namespace YouTrade.Winform
                         if (dt.Rows[i][1].ToString().Trim() == "")
                             break;
                         for (int j = 4; j <= dt.Columns.Count - 1; j++)
-                        {                            
+                        {
                             string strq = "INSERT INTO [dbo].[CashFlow] ([Ticker],[Year] ,[Quater]  ,[Name] ,[Value] ,[Unit]) VALUES(@ticker,@year,@quarter,@feildname,@value,@unit)";
                             SqlCommand sqlcmdD = new SqlCommand(strq, dbcon);
 
@@ -807,7 +1001,7 @@ namespace YouTrade.Winform
                         }
                     }
                     catch
-                    {                       
+                    {
                     }
                 }
                 dbcon.Close();
@@ -994,7 +1188,7 @@ namespace YouTrade.Winform
         {
             btnNote.Text = "Note Running...";
             MoveToTempNote();
-           ReadExcelAndSaveNote();
+            ReadExcelAndSaveNote();
             btnNote.Text = "Note";
         }
         #endregion
@@ -1046,21 +1240,22 @@ namespace YouTrade.Winform
                     try
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
-
-                        string fullNameIn_In_Out = tbOutput.Text + "Ratios\\"+ fileName.Replace(".", string.Empty) + ".xls";
+                        txtStatus.Text = fileName + " is loading to Server";
+                        string fullNameIn_In_Out = tbOutput.Text + "Ratios\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
-
+                            txtStatus.Text = (fileName + " is loading to Server").ToString();
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
-                                txtStatus.Text = fileName;
                                 SaveToDBRatio(tbl);
+                                //progressBar1.Value++;
                                 break;
                             }
 
                         }
                         StoreFileRatios(file);
+                        txtStatus.Text = "";
                     }
                     catch
                     {
@@ -1082,11 +1277,10 @@ namespace YouTrade.Winform
                     try
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
-
                         string fullNameIn_In_Out = tbOutput.Text + "Balance\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
-                            txtStatus.Text = fileName;
+                            txtStatus.Text = (fileName + " is loading to Server").ToString();
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
@@ -1096,6 +1290,7 @@ namespace YouTrade.Winform
 
                         }
                         StoreFileBalance(file);
+                        txtStatus.Text = "";
                     }
                     catch
                     {
@@ -1117,20 +1312,22 @@ namespace YouTrade.Winform
                     try
                     {
                         string fileName = Path.GetFileNameWithoutExtension(file);
-
+                        txtStatus.Text = fileName + " is loading to Server";
                         string fullNameIn_In_Out = tbOutput.Text + "Stock\\" + fileName.Replace(".", string.Empty) + ".xls";
                         if (!File.Exists(fullNameIn_In_Out))
                         {
-                            txtStatus.Text = fileName;
+                            txtStatus.Text = (fileName + " is loading to Server").ToString();
                             dsSource = GetDatasetFromExcel(file);
                             foreach (System.Data.DataTable tbl in dsSource.Tables)
                             {
                                 SaveToDBStock(tbl);
+                                //progressBar1.Value++;
                                 break;
                             }
 
                         }
                         StoreFileStock(file);
+                        txtStatus.Text = "";
                     }
                     catch
                     {
@@ -1212,7 +1409,7 @@ namespace YouTrade.Winform
         }
         #endregion
     }
-    
+
 }
 
 

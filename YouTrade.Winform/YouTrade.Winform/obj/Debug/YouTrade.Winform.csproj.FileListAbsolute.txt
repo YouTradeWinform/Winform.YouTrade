@@ -47,3 +47,4 @@ C:\Users\Student\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Win
 C:\Users\Student\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.MainForm.resources
 C:\Users\Student\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.Properties.Resources.resources
 C:\Users\Student\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csproj.GenerateResource.Cache
+C:\Users\Student\Documents\GitHub\Winform.YouTrade\YouTrade.Winform\YouTrade.Winform\obj\Debug\YouTrade.Winform.csprojResolveAssemblyReference.cache
